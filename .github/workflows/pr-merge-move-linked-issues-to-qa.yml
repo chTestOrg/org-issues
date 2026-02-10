@@ -1,0 +1,39 @@
+name: Move linked issues to QA (GitHub App)
+
+on:
+  workflow_call:
+
+jobs:
+  move-to-qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: chTestORG
+
+      - name: Checkout config repository
+        uses: actions/checkout@v4
+        with:
+          repository: chTestORG/org-issues
+          path: config-repo
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Move linked issues to QA (GraphQL)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const scriptName = "pr-merge-move-linked-issues-to-qa";
+            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/workflow${scriptName}.mjs`;
+            
+            try {
+              const { default: run } = await import(scriptPath);
+              await run({ github, context, core });
+            } catch (err) {
+              core.setFailed(`Failed to execute ${scriptName}: ${err.message}`);
+            }
