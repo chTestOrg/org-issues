@@ -2,6 +2,11 @@ name: Move linked issues to QA (GitHub App)
 
 on:
   workflow_call:
+    inputs:
+      script-name:
+        required: false
+        type: string
+        default: "pr-merge-move-linked-issues-to-qa"
 
 jobs:
   move-to-qa:
@@ -28,7 +33,7 @@ jobs:
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const scriptName = "pr-merge-move-linked-issues-to-qa";
+            const scriptName = "${inputs["script-name"]}";
             const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/workflow/${scriptName}.mjs`;
             
             try {
