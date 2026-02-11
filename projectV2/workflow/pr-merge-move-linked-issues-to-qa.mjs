@@ -16,7 +16,7 @@ export default async ({github, context, core}) => {
 
         // Зручне витягування ID через об'єктний конфіг
         const PROJECT_ID = project.id;
-        const STATUS_FIELD_ID = project.fields.status.id;
+        const STATUS_FIELD_ID = project.fields.status;
         const QA_OPTION = project.fields.status.options.qa;
         const QA_STATUS_FIELD_ID = project.fields.status_qa_board.id;
         const QA_TODO_OPTION = project.fields.status_qa_board.options.todo;
