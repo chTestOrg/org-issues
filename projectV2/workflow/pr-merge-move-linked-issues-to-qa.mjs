@@ -10,9 +10,9 @@ export default async ({ github, context, core }) => {
 
         const PROJECT_ID = project.id;
         const STATUS_FIELD_ID = project.fields.status.id;
-        const QA_OPTION_ID = project.fields.status.options.qa;
+        const QA_OPTION_ID = project.fields.status.options.qa.id;
         const QA_STATUS_FIELD_ID = project.fields.status_qa_board.id;
-        const QA_TODO_OPTION_ID = project.fields.status_qa_board.options.todo;
+        const QA_TODO_OPTION_ID = project.fields.status_qa_board.options.todo.id;
 
         core.startGroup("Inputs");
         core.info(`Repository: ${owner}/${repo}`);
