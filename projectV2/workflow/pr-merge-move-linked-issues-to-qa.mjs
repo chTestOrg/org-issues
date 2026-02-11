@@ -17,7 +17,7 @@ export default async ({ github, context, core }) => {
         core.startGroup("Inputs");
         core.info(`Repository: ${owner}/${repo}`);
         core.info(`PR: #${prNumber}`);
-        core.info(`Config: ${configPath}`);
+        //core.info(`Config: ${configPath}`);
         core.endGroup();
 
         const query = `
