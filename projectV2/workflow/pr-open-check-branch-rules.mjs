@@ -50,15 +50,21 @@ export default async ({ github, context, core }) => {
               `;
 
         const getFieldValueQuery = `
-          query($itemId: ID!, $fieldId: ID!) {
+          query($itemId: ID!) {
             node(id: $itemId) {
               ... on ProjectV2Item {
                 id
-                field: fieldValues(first: 1, filterBy: { fieldId: $fieldId }) {
+                fieldValues(first: 20) {
                   nodes {
                     ... on ProjectV2ItemFieldSingleSelectValue {
                       id
                       name
+                      field {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                        }
+                      }
                     }
                   }
                 }
@@ -69,10 +75,10 @@ export default async ({ github, context, core }) => {
         const res = await github.graphql(getLinkedItemsQuery, { owner, repo, prNumber });
         const issues = res.repository.pullRequest.closingIssuesReferences?.nodes || [];
 
-        if (issues.length === 0) {
-            core.notice("No linked issues found (using 'Closes #123' syntax).");
-            return;
-        }
+        // if (issues.length === 0) {
+        //     core.notice("No linked issues found (using 'Closes #123' syntax).");
+        //     return;
+        // }
 
         core.info(`Found ${issues.length} linked issue(s).`);
         const errors = [];
@@ -89,13 +95,13 @@ export default async ({ github, context, core }) => {
             }
 
             for (const item of relevantItems) {
-                const { node: projectItem } = await github.graphql(getFieldValueQuery, {
-                    itemId: item.id,
-                    fieldId: ENV_FIELD_ID
-                });
-                const envField = projectItem.environment.nodes[0];
-                const envId = envField?.id;
+                const { node: projectItem } = await github.graphql(getFieldValueQuery, {itemId: item.id});
 
+                const envField = projectItem.fieldValues.nodes.find(
+                    (f) => f.field?.id === ENV_FIELD_ID
+                );
+
+                const envId = envField?.id;
                 let allowed = false;
                 if (envId === STAGE_OPTION_ID && targetBranch === "develop") allowed = true;
                 if (envId === PRERELEASE_OPTION_ID && targetBranch === "prerelease") allowed = true;
