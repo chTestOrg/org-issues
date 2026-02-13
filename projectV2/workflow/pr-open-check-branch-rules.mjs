@@ -59,6 +59,7 @@ export default async ({ github, context, core }) => {
                     ... on ProjectV2ItemFieldSingleSelectValue {
                       id
                       name
+                      optionId
                       field {
                         ... on ProjectV2SingleSelectField {
                           id
@@ -101,7 +102,7 @@ export default async ({ github, context, core }) => {
                     (f) => f.field?.id === ENV_FIELD_ID
                 );
 
-                const envId = envField?.id;
+                const envId = envField?.optionId;
                 let allowed = false;
                 if (envId === STAGE_OPTION_ID && targetBranch === "develop") allowed = true;
                 if (envId === PRERELEASE_OPTION_ID && targetBranch === "prerelease") allowed = true;
