@@ -1,4 +1,4 @@
-export async function getClosingIssues(github, { owner, repo, prNumber }) {
+export async function getClosingIssuesReferences(github, { owner, repo, prNumber }) {
     const query = `
         query($owner: String!, $repo: String!, $prNumber: Int!) {
           repository(owner: $owner, name: $repo) {

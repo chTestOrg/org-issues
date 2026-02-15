@@ -1,8 +1,9 @@
 import { config } from '../config/project-org-dev-board.mjs';
-import { getClosingIssues } from './utils/getClosingIssues.mjs';
+import { getClosingIssuesReferences } from './utils/getClosingIssuesReferences.mjs';
 import { getProjectItemsForIssues } from './utils/getProjectItemsForIssues.mjs';
 import { updateSingleSelectField } from './utils/updateSingleSelectField.mjs';
 import { logGroup } from './utils/logger.mjs';
+import prIssuesVerify from "./utils/pr-verify-linked-issues.mjs";
 
 export default async function prMergedProcess({ github, context, core }) {
     try {
@@ -26,11 +27,14 @@ export default async function prMergedProcess({ github, context, core }) {
 
         await logGroup(core, "Fetch closing issues", async () => {
 
-            const { merged, issues } = await getClosingIssues(github, {
+            const { merged, issues } = await getClosingIssuesReferences(github, {
                 owner,
                 repo,
                 prNumber
             });
+
+            const addIssues = await prIssuesVerify({github, context, core})
+            console.log(addIssues)
 
             if (!merged) {
                 core.notice("PR is not merged. Skipping.");
@@ -44,7 +48,23 @@ export default async function prMergedProcess({ github, context, core }) {
 
             core.info(`Found ${issues.length} issue(s).`);
 
-            const items = getProjectItemsForIssues(issues, PROJECT_ID);
+            //const items = getProjectItemsForIssues(issues, PROJECT_ID);
+
+            const items = [];
+
+            for (const issue of issues) {
+                const issueItems = issue.projectItems?.nodes || [];
+
+                for (const item of issueItems) {
+                    if (item.project?.id === PROJECT_ID) {
+                        items.push({
+                            issueNumber: issue.number,
+                            itemId: item.id
+                        });
+                    }
+                }
+            }
+
 
             if (items.length === 0) {
                 core.notice("No project items found for configured project.");
