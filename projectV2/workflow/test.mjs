@@ -13,7 +13,9 @@ export default async function test({ context, core }) {
         const baseBranch = pr.base.ref; // куди мержиться
         const headBranch = pr.head.ref; // звідки мержиться
 
-        core.notice(`Base branch: ${baseBranch}`);
-        core.notice(`Head branch: ${headBranch}`);
+        // core.notice(`Base branch: ${baseBranch}`);
+        // core.notice(`Head branch: ${headBranch}`);
+        core.notice(`Base branch: ${baseBranch}\n Head branch: ${headBranch}`);
+
     });
 }
