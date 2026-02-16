@@ -1,4 +1,4 @@
-import { logGroup } from './logger.mjs';
+import { logGroup } from '../utils/logger.mjs';
 
 const IMPORTANT_START = "<!-- AUTO-LINKED-ISSUES-START -->";
 const IMPORTANT_END = "<!-- AUTO-LINKED-ISSUES-END -->";

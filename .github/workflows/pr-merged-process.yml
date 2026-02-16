@@ -12,8 +12,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
           owner: chTestORG
 
       - name: Checkout config repository
@@ -30,7 +30,7 @@ jobs:
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/workflow/${{ env.script-name }}.mjs`;
+            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/src/workflows/${{ env.script-name }}.mjs`;
             try {
               const { default: run } = await import(scriptPath);
               await run({ github, context, core });
@@ -46,7 +46,7 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const scriptName = "${{ env.script-name }}";
-            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/workflow/${scriptName}.mjs`;
+            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/src/workflows/${scriptName}.mjs`;
             try {
               const { default: run } = await import(scriptPath);
               await run({ github, context, core });

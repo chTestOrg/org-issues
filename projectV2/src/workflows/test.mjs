@@ -1,4 +1,4 @@
-import {logGroup} from "./utils/logger.mjs";
+import { logGroup } from "../utils/logger.mjs";
 
 export default async function test({ context, core }) {
     await logGroup(core, "Check base branch", async () => {

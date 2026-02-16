@@ -1,9 +1,7 @@
-import { config } from '../config/project-org-dev-board.mjs';
-import { getClosingIssuesReferences } from './utils/getClosingIssuesReferences.mjs';
-import { getProjectItemsForIssues } from './utils/getProjectItemsForIssues.mjs';
-import { updateSingleSelectField } from './utils/updateSingleSelectField.mjs';
-import { logGroup } from './utils/logger.mjs';
-import prIssuesVerify from "./utils/pr-verify-linked-issues.mjs";
+import { config } from '../../config/project-org-dev-board.mjs';
+import { getClosingIssuesReferences } from '../api/getClosingIssuesReferences.mjs';
+import { updateSingleSelectField } from '../api/updateSingleSelectField.mjs';
+import { logGroup } from '../utils/logger.mjs';
 
 export default async function prMergedProcess({ github, context, core }) {
     try {
@@ -32,9 +30,6 @@ export default async function prMergedProcess({ github, context, core }) {
                 repo,
                 prNumber
             });
-
-            const addIssues = await prIssuesVerify({github, context, core})
-            console.log(addIssues)
 
             if (!merged) {
                 core.notice("PR is not merged. Skipping.");
