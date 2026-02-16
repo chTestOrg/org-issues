@@ -21,7 +21,7 @@ export default async function projectPrOpened({ github, context, core }) {
         const DEV_STATUS_FIELD_ID = project.fields.status.id;
         const DEV_STATUS_FIELD_OPTION = project.fields.status.options;
 
-        const parseIssuesLink = await prVerifyLinkedIssues({github, context, core});
+        await prVerifyLinkedIssues({github, context, core});
 
 /*        await logGroup(core, "Fetch closing issues", async () => {
 

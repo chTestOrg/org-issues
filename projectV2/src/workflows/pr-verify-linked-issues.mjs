@@ -1,6 +1,6 @@
 import {logGroup} from "../utils/logger.mjs";
-import {buildWarningBlock, IMPORTANT, removeBlocks, WARNING,} from "../helpers/blocks.mjs";
-import {getPrBody, updatePrBody} from "../api/getPullRequest.mjs";
+import {buildImportantBlock, buildWarningBlock, IMPORTANT, removeBlocks, WARNING,} from "../helpers/blocks.mjs";
+import {getIssueTitle, getPrBody, updatePrBody} from "../api/getPullRequest.mjs";
 import {extractIssuesFromPrBody} from "../helpers/parseIssues.mjs";
 
 export default async function prVerifyLinkedIssues({ github, context, core }){
