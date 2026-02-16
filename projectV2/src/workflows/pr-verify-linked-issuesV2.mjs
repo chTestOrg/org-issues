@@ -3,7 +3,7 @@ import {buildImportantBlockV2, buildWarningBlock, IMPORTANT, removeBlocks, WARNI
 import {getPrBody, updatePrBody} from "../api/getPullRequest.mjs";
 
 
-export default async ({ github, context, core }) => {
+export default async function prVerifyLinkedIssues({ github, context, core }){
     if (!context.payload.pull_request) {
         core.notice("Not a PR event. Skipping.");
         return;
