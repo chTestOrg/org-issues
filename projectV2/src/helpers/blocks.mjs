@@ -1,5 +1,5 @@
 import {getIssueTitle} from "../api/getPullRequest.mjs";
-import {extractIssuesFromPrBody} from "./parseIssuesLinks.mjs";
+import {extractIssuesFromBody} from "./parseIssuesLinks.mjs";
 
 export const IMPORTANT = {
     start: "<!-- AUTO-LINKED-ISSUES-START -->",
@@ -51,7 +51,7 @@ export function buildImportantBlock(owner, sections) {
 }
 
 export async function buildImportantBlockV2( github,{ owner, body }) {
-    const issuesByRepo = extractIssuesFromPrBody(body, owner);
+    const issuesByRepo = extractIssuesFromBody(body, owner);
 
     if (issuesByRepo.size === 0) {
         return null;
