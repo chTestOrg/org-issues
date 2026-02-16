@@ -2,7 +2,8 @@ import {config} from "../../config/project-org-dev-board.mjs";
 import {logGroup} from "../utils/logger.mjs";
 import {getClosingIssuesReferences} from "../api/getClosingIssuesReferences.mjs";
 import {updateSingleSelectField} from "../api/updateSingleSelectField.mjs";
-import prVerifyLinkedIssues from "./pr-verify-linked-issues.mjs";
+import prVerifyLinkedIssues from "./pr-verify-add-linked-issues.mjs";
+//import prVerifyLinkedIssues from "./pr-verify-linked-issues.mjs";
 
 export default async function projectPrOpened({ github, context, core }) {
     try {
@@ -21,6 +22,7 @@ export default async function projectPrOpened({ github, context, core }) {
         const DEV_STATUS_FIELD_ID = project.fields.status.id;
         const DEV_STATUS_FIELD_OPTION = project.fields.status.options;
 
+        //await prVerifyLinkedIssues({github, context, core});
         await prVerifyLinkedIssues({github, context, core});
 
 /*        await logGroup(core, "Fetch closing issues", async () => {
