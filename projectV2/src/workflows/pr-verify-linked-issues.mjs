@@ -1,7 +1,7 @@
 import {logGroup} from "../utils/logger.mjs";
 import {buildImportantBlock, buildWarningBlock, IMPORTANT, removeBlocks, WARNING,} from "../helpers/blocks.mjs";
 import {getIssueTitle, getPrBody, updatePrBody} from "../api/getPullRequest.mjs";
-import {extractIssuesFromPrBody} from "../helpers/parseIssues.mjs";
+import {extractIssuesFromBody} from "../helpers/parseIssuesLinks.mjs";
 
 export default async function prVerifyLinkedIssues({ github, context, core }){
     if (!context.payload.pull_request) {
@@ -21,7 +21,7 @@ export default async function prVerifyLinkedIssues({ github, context, core }){
         const cleanBody = removeBlocks(originalBody, [IMPORTANT, WARNING]);
 
         // 3️⃣ Дістати issues з body
-        const issuesByRepo = extractIssuesFromPrBody(cleanBody, owner);
+        const issuesByRepo = extractIssuesFromBody(cleanBody, owner);
 
         // 4️⃣ Якщо немає — WARNING
         if (issuesByRepo.size === 0) {

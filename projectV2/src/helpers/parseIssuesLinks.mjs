@@ -1,4 +1,4 @@
-export function extractIssuesFromPrBody(body, owner) {
+export function extractIssuesFromBody(body, owner) {
     const issueRegex = new RegExp(
         `https:\\/\\/github\\.com\\/${owner}\\/([\\w-]+)\\/issues\\/(\\d+)`,
         "gi"
