@@ -1,3 +1,6 @@
+import {getIssueTitle} from "../api/getPullRequest.mjs";
+import {extractIssuesFromBody} from "./parseIssuesLinks.mjs";
+
 export const IMPORTANT = {
     start: "<!-- AUTO-LINKED-ISSUES-START -->",
     end: "<!-- AUTO-LINKED-ISSUES-END -->",
@@ -27,6 +30,66 @@ ${WARNING.end}`;
 }
 
 export function buildImportantBlock(owner, sections) {
+    let block = `${IMPORTANT.start}
+---
+> [!IMPORTANT]
+> ### Linked Issues:
+`;
+
+    for (const section of sections) {
+        if (sections.length > 1) {
+            block += `> **Repository: ${section.repo}**\n`;
+        }
+
+        for (const issue of section.issues) {
+            block += `> Closes: [${issue.title} #${issue.number}](https://github.com/${owner}/${section.repo}/issues/${issue.number})\n`;
+        }
+    }
+
+    block += `${IMPORTANT.end}`;
+    return block;
+}
+
+export async function buildImportantBlockV2(owner, body) {
+    const issuesByRepo = extractIssuesFromBody(body, owner);
+
+    if (issuesByRepo.size === 0) {
+        return null;
+    }
+
+    const sections = [];
+
+    for (const [repo, numbers] of issuesByRepo.entries()) {
+        const issues = [];
+
+        for (const number of numbers) {
+            try {
+                const title = await getIssueTitle(github, {
+                    owner,
+                    repo,
+                    issueNumber: number,
+                });
+
+                issues.push({ number, title });
+            } catch {
+                // silently skip inaccessible issues
+            }
+        }
+
+        if (issues.length) {
+            sections.push({
+                repo,
+                issues: issues.sort((a, b) => a.number - b.number),
+            });
+        }
+    }
+
+    if (sections.length === 0) {
+        return null;
+    }
+
+    sections.sort((a, b) => a.repo.localeCompare(b.repo));
+
     let block = `${IMPORTANT.start}
 ---
 > [!IMPORTANT]
