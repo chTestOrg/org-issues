@@ -4,7 +4,7 @@ import {
     buildWarningBlock,
     extractIssues,
     stripAutoBlocks
-} from "../../../projectV2/src/helpers/pr-verify-linked-issues.helpers.mjs";
+} from "./pr-verify-linked-issues.helpers.mjs";
 
 async function getPrBody(github, { owner, repo, prNumber }) {
     const { data: pr } = await github.rest.pulls.get({
