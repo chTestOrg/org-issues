@@ -3,7 +3,7 @@ import { getClosingIssuesReferences } from '../api/getClosingIssuesReferences.mj
 import { updateSingleSelectField } from '../api/updateSingleSelectField.mjs';
 import { logGroup } from '../utils/logger.mjs';
 
-export default async function prMergedProcess({ github, context, core }) {
+export default async function projectPrMerged({ github, context, core }) {
     try {
         if (!context.payload.pull_request) {
             core.notice("Not a PR event. Skipping.");

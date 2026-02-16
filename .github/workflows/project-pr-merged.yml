@@ -1,10 +1,10 @@
-name: Project – PR Opened
+name: Project – PR Merged
 
 on:
   workflow_call:
 
 jobs:
-  project-pr-opened:
+  project-pr-merged:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,27 +23,10 @@ jobs:
           path: config-repo
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Validate PR Base Branch (Front-End)
-        if: inputs.repo-type == 'front-end'
+      - name: Run Project PR Merged Automation
         uses: actions/github-script@v7
         env:
-          script-name: "chek-pull-base-branch"
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const scriptName = "${{ env.script-name }}";
-            const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/src/workflows/${scriptName}.mjs`;
-            try {
-              const { default: run } = await import(scriptPath);
-              await run({ github, context, core });
-            } catch (err) {
-              core.setFailed(`Failed to execute ${scriptName}: ${err.message}`);
-            }
-
-      - name: Run Project PR Opened Automation
-        uses: actions/github-script@v7
-        env:
-          script-name: "move-linked-issues-to-reviw"
+          script-name: "project-pr-merged"
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
