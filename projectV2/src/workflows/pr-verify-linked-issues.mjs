@@ -1,7 +1,7 @@
-import {logGroup} from "../utils/logger.mjs";
-import {buildImportantBlock, buildWarningBlock, IMPORTANT, removeBlocks, WARNING,} from "../helpers/blocks.mjs";
-import {getIssueTitle, getPrBody, updatePrBody} from "../api/getPullRequest.mjs";
-import {extractIssuesFromBody} from "../helpers/parseIssuesLinks.mjs";
+import { logGroup } from "../utils/logger.mjs";
+import { buildWarningBlock, IMPORTANT, removeBlocks, WARNING } from "../helpers/blocks.mjs";
+import { getPrBody, updatePrBody } from "../api/getPullRequest.mjs";
+import { buildLinkedIssuesBlock } from "../services/pr-linked-issues.mjs";
 
 export default async function prVerifyLinkedIssues({ github, context, core }){
     if (!context.payload.pull_request) {
@@ -20,11 +20,15 @@ export default async function prVerifyLinkedIssues({ github, context, core }){
         // 2️⃣ Очистити auto-блоки
         const cleanBody = removeBlocks(originalBody, [IMPORTANT, WARNING]);
 
-        // 3️⃣ Дістати issues з body
-        const issuesByRepo = extractIssuesFromBody(cleanBody, owner);
+        // 3️⃣ Бізнес-логіка: побудувати блок з задачами
+        const importantBlock = await buildLinkedIssuesBlock(github, {
+            owner,
+            body: cleanBody,
+            core,
+        });
 
         // 4️⃣ Якщо немає — WARNING
-        if (issuesByRepo.size === 0) {
+        if (!importantBlock) {
             const updatedBody = `${buildWarningBlock()}\n\n${cleanBody}`;
 
             if (updatedBody !== originalBody) {
@@ -37,43 +41,7 @@ export default async function prVerifyLinkedIssues({ github, context, core }){
             return;
         }
 
-        // 5️⃣ Завантажити titles
-        const sections = [];
-
-        for (const [repoName, numbers] of issuesByRepo.entries()) {
-            const issues = [];
-
-            for (const number of numbers) {
-                try {
-                    const title = await getIssueTitle(github, {
-                        owner,
-                        repo: repoName,
-                        issueNumber: number,
-                    });
-
-                    issues.push({ number, title });
-                } catch {
-                    core.warning(`Cannot access ${repoName}#${number}`);
-                }
-            }
-
-            if (issues.length) {
-                sections.push({
-                    repo: repoName,
-                    issues: issues.sort((a, b) => a.number - b.number),
-                });
-            }
-        }
-
-        sections.sort((a, b) => a.repo.localeCompare(b.repo));
-
-        if (sections.length === 0) {
-            core.notice("No accessible issues");
-            return;
-        }
-
-        // 6️⃣ IMPORTANT block
-        const importantBlock = buildImportantBlock(owner, sections);
+        // 5️⃣ IMPORTANT block
         const updatedBody = `${cleanBody}\n\n${importantBlock}`;
 
         if (updatedBody === originalBody) {
