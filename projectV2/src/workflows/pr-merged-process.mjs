@@ -37,7 +37,7 @@ export default async function prMergedProcess({ github, context, core }) {
             }
 
             if (issues.length === 0) {
-                core.notice("No closing issues found.");
+                core.notice("No linked issues found.");
                 return;
             }
 
@@ -77,6 +77,7 @@ export default async function prMergedProcess({ github, context, core }) {
                             fieldId: DEV_STATUS_FIELD_ID,
                             optionId: QA_OPTION.id
                         });
+                        core.info(`✅ Item "${itemId}" updated "DEV Board Status" to "${QA_OPTION.name}"`);
 
                         await updateSingleSelectField(github, {
                             projectId: PROJECT_ID,
@@ -84,8 +85,8 @@ export default async function prMergedProcess({ github, context, core }) {
                             fieldId: QA_STATUS_FIELD_ID,
                             optionId: QA_TODO_OPTION.id
                         });
+                        core.info(`✅ Item "${itemId}" updated "QA Board Status" to "${QA_TODO_OPTION.name}"`);
 
-                        core.info(`✅ Moved to QA`);
                     } catch (err) {
                         const msg = `❌ Failed for item ${itemId}: ${err.message}`;
                         core.error(msg);
