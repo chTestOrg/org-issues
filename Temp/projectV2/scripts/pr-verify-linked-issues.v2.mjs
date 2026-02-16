@@ -1,10 +1,10 @@
-import { logGroup } from "../utils/logger.mjs";
+import { logGroup } from "../../../projectV2/src/utils/logger.mjs";
 import {
     buildImportantBlock,
     buildWarningBlock,
     extractIssues,
     stripAutoBlocks
-} from "./pr-verify-linked-issues.helpers.mjs";
+} from "../../../projectV2/src/helpers/pr-verify-linked-issues.helpers.mjs";
 
 async function getPrBody(github, { owner, repo, prNumber }) {
     const { data: pr } = await github.rest.pulls.get({
