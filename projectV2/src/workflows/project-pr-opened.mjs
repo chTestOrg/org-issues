@@ -2,7 +2,7 @@ import {config} from "../../config/project-org-dev-board.mjs";
 import {logGroup} from "../utils/logger.mjs";
 import {getClosingIssuesReferences} from "../api/getClosingIssuesReferences.mjs";
 import {updateSingleSelectField} from "../api/updateSingleSelectField.mjs";
-import prVerifyLinkedIssues from "./pr-verify-add-linked-issues.mjs";
+import prVerifyLinkedIssues from "./pr-verify-linked-issues.mjs";
 //import prVerifyLinkedIssues from "./pr-verify-linked-issues.mjs";
 
 export default async function projectPrOpened({ github, context, core }) {
