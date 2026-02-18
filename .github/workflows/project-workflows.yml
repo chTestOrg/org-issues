@@ -8,6 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Who is the sender?
+        run: |
+          echo "Sender Login: ${{ github.event.sender.login }}"
+          echo "Sender Type: ${{ github.event.sender.type }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Action: ${{ github.event.action }}"
+
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v1
