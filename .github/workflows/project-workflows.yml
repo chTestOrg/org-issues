@@ -5,6 +5,7 @@ on:
 
 jobs:
   project-workflows:
+    if: github.event.sender.type != 'Bot'
     runs-on: ubuntu-latest
 
     steps:
@@ -75,7 +76,7 @@ jobs:
             }
 
       - name: Run Project PR Edited Automation
-        if: github.event.action == 'edited' &&  github.event.sender.type != 'Bot'
+        if: github.event.action == 'edited'
         uses: actions/github-script@v7
         env:
           script-name: "project-pr-edited"
