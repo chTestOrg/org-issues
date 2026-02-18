@@ -1,11 +1,15 @@
-name: "Create Merge Develop into Prerelease PR"
+name: "Manual Remote Merge: Dev -> Pre"
 
 on:
-  workflow_dispatch: # Запуск вручну (зручно для тестів)
-  # Можна додати trigger на push у develop, якщо треба автоматично
+  workflow_dispatch:
+    inputs:
+      target-repo:
+        description: 'Репозиторій для синхронізації (напр. chTestORG/ui-app)'
+        required: true
+        default: 'chTestORG/org-front-end'
 
 jobs:
-  create-pr:
+  merge-check-and-run:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token
@@ -14,57 +18,73 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
 
-      - name: Checkout Repository
+      - name: Checkout Target Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Тут нам потрібна вся історія для мерджу
+          repository: ${{ inputs.target-repo }}
+          fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
+          path: target-repo
 
-      - name: Git Branching & Merge
+      - name: Check for Changes & Merge
+        id: check_changes
+        working-directory: ./target-repo
         run: |
-          # 1. Налаштування Git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # 2. Оновлення prerelease та створення нової гілки
-          git checkout prerelease
-          git pull origin prerelease
           
-          # Створюємо нову гілку від prerelease (видаляємо стару, якщо є)
+          # Оновлюємо посилання на віддалені гілки
+          git fetch origin develop prerelease
+
+          # Перевіряємо чи є комміти в develop, яких немає в prerelease
+          # rev-list --count видасть число більше 0, якщо зміни є
+          CHANGES_COUNT=$(git rev-list --count prerelease..origin/develop)
+          
+          echo "Found $CHANGES_COUNT new commits in develop."
+          
+          if [ "$CHANGES_COUNT" -eq "0" ]; then
+            echo "No changes to merge. Skipping PR creation."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+
+          # Створюємо гілку та мерджимо
+          git checkout prerelease
           git branch -D merge-develop-into-prerelease || true
           git checkout -b merge-develop-into-prerelease
-
-          # 3. Спроба мерджу develop
-          echo "Merging develop into the new branch..."
+          
           if git merge origin/develop; then
-            echo "Merge successful, pushing branch..."
             git push origin merge-develop-into-prerelease --force
           else
-            echo "Conflict detected! You will need to resolve it manually."
+            echo "❌ Merge conflict detected! Stopping."
             exit 1
           fi
 
       - name: Create Pull Request
+        if: steps.check_changes.outputs.has_changes == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
+            const [owner, repo] = "${{ inputs.target-repo }}".split('/');
             try {
               const { data: pullRequest } = await github.rest.pulls.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                owner: owner,
+                repo: repo,
                 title: '🚀 Merge: develop -> prerelease',
                 head: 'merge-develop-into-prerelease',
                 base: 'prerelease',
-                body: 'Автоматично створений PR для синхронізації гілок develop та prerelease.',
-                draft: false
+                body: 'Автоматично створений PR для синхронізації змін між гілками.',
               });
               core.info(`PR created: ${pullRequest.html_url}`);
             } catch (error) {
               if (error.message.includes('A pull request already exists')) {
-                core.info('PR вже існує, оновлюємо гілку...');
+                core.info('PR вже існує, гілку оновлено.');
               } else {
-                core.setFailed(`Помилка створення PR: ${error.message}`);
+                core.setFailed(`API Error: ${error.message}`);
               }
             }
