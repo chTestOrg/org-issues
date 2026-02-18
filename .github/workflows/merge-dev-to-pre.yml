@@ -1,0 +1,70 @@
+name: "Create Merge Develop into Prerelease PR"
+
+on:
+  workflow_dispatch: # Запуск вручну (зручно для тестів)
+  # Можна додати trigger на push у develop, якщо треба автоматично
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Тут нам потрібна вся історія для мерджу
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Git Branching & Merge
+        run: |
+          # 1. Налаштування Git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 2. Оновлення prerelease та створення нової гілки
+          git checkout prerelease
+          git pull origin prerelease
+          
+          # Створюємо нову гілку від prerelease (видаляємо стару, якщо є)
+          git branch -D merge-develop-into-prerelease || true
+          git checkout -b merge-develop-into-prerelease
+
+          # 3. Спроба мерджу develop
+          echo "Merging develop into the new branch..."
+          if git merge origin/develop; then
+            echo "Merge successful, pushing branch..."
+            git push origin merge-develop-into-prerelease --force
+          else
+            echo "Conflict detected! You will need to resolve it manually."
+            exit 1
+          fi
+
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            try {
+              const { data: pullRequest } = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🚀 Merge: develop -> prerelease',
+                head: 'merge-develop-into-prerelease',
+                base: 'prerelease',
+                body: 'Автоматично створений PR для синхронізації гілок develop та prerelease.',
+                draft: false
+              });
+              core.info(`PR created: ${pullRequest.html_url}`);
+            } catch (error) {
+              if (error.message.includes('A pull request already exists')) {
+                core.info('PR вже існує, оновлюємо гілку...');
+              } else {
+                core.setFailed(`Помилка створення PR: ${error.message}`);
+              }
+            }
