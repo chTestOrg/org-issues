@@ -29,6 +29,7 @@ jobs:
           repository: chTestORG/org-issues
           path: config-repo
           token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 1
 
       - name: Validate PR Base Branch (Front-End)
         if: inputs.repo-type == 'front-end'
