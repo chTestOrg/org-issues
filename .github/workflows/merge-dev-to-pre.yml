@@ -102,6 +102,8 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const [owner, repo] = "${{ inputs.target-repo }}".split('/');
+            const triggerUser = context.actor; // Отримуємо того, хто натиснув кнопку
+            
             try {
               const { data: pr } = await github.rest.pulls.create({
                 owner,
@@ -109,9 +111,25 @@ jobs:
                 title: '🚀 Merge: develop -> prerelease',
                 head: 'merge-develop-into-prerelease',
                 base: 'prerelease',
-                body: '### 🤖 Автоматична синхронізація\n\n**Увага:** Перевірка цілісності пройдена успішно (develop містить усі зміни з prerelease).',
+                body: `### 🤖 Автоматична синхронізація\n\nЦей PR створено за запитом @${triggerUser}.`,
               });
+            
               console.log(`✅ PR створено: ${pr.html_url}`);
-            } catch (e) {
-              console.log(`⚠️ Помилка/PR вже є: ${e.message}`);
+            
+              // Призначаємо PR на того, хто запустив воркфлоу
+              await github.rest.issues.addAssignees({
+                owner,
+                repo,
+                issue_number: pr.number,
+                assignees: [triggerUser]
+              });
+            
+              console.log(`👤 Виконавцем призначено: @${triggerUser}`);
+            
+            } catch (error) {
+              if (error.message.includes('A pull request already exists')) {
+                console.log('⚠️ PR вже існує, гілку оновлено.');
+              } else {
+                core.setFailed(`API Error: ${error.message}`);
+              }
             }
