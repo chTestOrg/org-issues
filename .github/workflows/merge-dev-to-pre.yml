@@ -35,21 +35,38 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          echo "📡 Оновлення посилань на гілки develop та prerelease..."
+          echo "📡 Оновлення посилань на гілки..."
           git fetch origin develop prerelease
 
-      - name: Check for Changes
+      - name: Sync Integrity Check (Prerelease in Develop)
+        working-directory: ./target-repo
+        run: |
+          echo "🛡️ Перевірка цілісності: чи всі комміти з prerelease є в develop?"
+          # Рахуємо комміти, які є в prerelease, але відсутні в develop
+          BEHIND_COUNT=$(git rev-list --count origin/develop..origin/prerelease)
+          
+          if [ "$BEHIND_COUNT" -gt "0" ]; then
+            echo "❌ ПОМИЛКА СИНХРОНІЗАЦІЇ!"
+            echo "Гілка develop відстає від prerelease на $BEHIND_COUNT коммітів."
+            echo "Через каскадний мердж спочатку потрібно влити prerelease в develop,"
+            echo "щоб не втратити дані. Автоматизація зупинена."
+            exit 1
+          else
+            echo "✅ Цілісність підтверджена. develop містить усі зміни з prerelease."
+          fi
+
+      - name: Check for Changes (Develop in Prerelease)
         id: check
         working-directory: ./target-repo
         run: |
-          echo "🔍 Порівняння гілок origin/prerelease та origin/develop..."
+          echo "🔍 Перевірка наявності нових фіч у develop..."
           COUNT=$(git rev-list --count origin/prerelease..origin/develop)
           
           if [ "$COUNT" -eq "0" ]; then
-            echo "✅ Змін не знайдено. Гілка prerelease вже містить усі комміти з develop."
+            echo "✅ Змін не знайдено. prerelease вже актуальна."
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "🚀 Знайдено $COUNT нових коммітів у develop. Готуємося до мерджу..."
+            echo "🚀 Знайдено $COUNT нових коммітів у develop. Продовжуємо..."
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -57,8 +74,8 @@ jobs:
         if: steps.check.outputs.has_changes == 'true'
         working-directory: ./target-repo
         run: |
-          echo "🧹 Очищення старих тимчасових гілок..."
-          git push origin --delete merge-develop-into-prerelease || echo "ℹ️ Гілка в origin відсутня, видалення не потрібне."
+          echo "🧹 Очищення тимчасових гілок..."
+          git push origin --delete merge-develop-into-prerelease || echo "ℹ️ Віддалена гілка відсутня."
           git branch -D merge-develop-into-prerelease || echo "ℹ️ Локальна гілка відсутня."
           
           echo "🌱 Створення нової гілки 'merge-develop-into-prerelease' на базі 'prerelease'..."
@@ -69,13 +86,12 @@ jobs:
         if: steps.check.outputs.has_changes == 'true'
         working-directory: ./target-repo
         run: |
-          echo "🔀 Початок мерджу develop -> merge-develop-into-prerelease..."
+          echo "🔀 Мердж develop -> merge-develop-into-prerelease..."
           if git merge origin/develop --no-edit; then
-            echo "✅ Мердж успішний! Відправляємо гілку в origin..."
+            echo "✅ Успіх! Пушимо в origin..."
             git push origin merge-develop-into-prerelease
           else
-            echo "❌ ПОМИЛКА: Виявлено конфлікти мерджу!"
-            echo "Будь ласка, вирішіть конфлікти вручну в гілці develop або prerelease."
+            echo "❌ КОНФЛІКТ! Потрібне ручне втручання."
             exit 1
           fi
 
@@ -86,20 +102,16 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const [owner, repo] = "${{ inputs.target-repo }}".split('/');
-            const prTitle = '🚀 Merge: develop -> prerelease';
-            
-            console.log(`🤖 Спроба створити PR у ${owner}/${repo}...`);
-            
             try {
-              const { data: pullRequest } = await github.rest.pulls.create({
+              const { data: pr } = await github.rest.pulls.create({
                 owner,
                 repo,
-                title: prTitle,
+                title: '🚀 Merge: develop -> prerelease',
                 head: 'merge-develop-into-prerelease',
                 base: 'prerelease',
-                body: '### 🤖 Автоматична синхронізація\nЦей PR створено автоматично для перенесення змін з `develop` у `prerelease`.',
+                body: '### 🤖 Автоматична синхронізація\n\n**Увага:** Перевірка цілісності пройдена успішно (develop містить усі зміни з prerelease).',
               });
-              console.log(`✅ PR успішно створено: ${pullRequest.html_url}`);
-            } catch (error) {
-              console.log(`⚠️ Попередження: ${error.message}`);
+              console.log(`✅ PR створено: ${pr.html_url}`);
+            } catch (e) {
+              console.log(`⚠️ Помилка/PR вже є: ${e.message}`);
             }
