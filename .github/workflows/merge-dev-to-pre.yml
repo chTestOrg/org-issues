@@ -35,14 +35,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Оновлюємо посилання на віддалені гілки
+          # 1. Завантажуємо актуальний стан обох гілок
           git fetch origin develop prerelease
 
-          # Перевіряємо чи є комміти в develop, яких немає в prerelease
-          # rev-list --count видасть число більше 0, якщо зміни є
-          CHANGES_COUNT=$(git rev-list --count prerelease..origin/develop)
+          # 2. ПЕРЕВІРКА: Використовуємо origin/ для обох гілок (це вирішує твою помилку)
+          CHANGES_COUNT=$(git rev-list --count origin/prerelease..origin/develop)
           
-          echo "Found $CHANGES_COUNT new commits in develop."
+          echo "Found $CHANGES_COUNT new commits in develop relative to prerelease."
           
           if [ "$CHANGES_COUNT" -eq "0" ]; then
             echo "No changes to merge. Skipping PR creation."
@@ -52,11 +51,14 @@ jobs:
           
           echo "has_changes=true" >> $GITHUB_OUTPUT
 
-          # Створюємо гілку та мерджимо
-          git checkout prerelease
+          # 3. ПІДГОТОВКА: Створюємо локальну prerelease з віддаленої
+          git checkout -B prerelease origin/prerelease
+          
+          # 4. СТВОРЕННЯ ГІЛКИ: Створюємо тимчасову гілку від prerelease
           git branch -D merge-develop-into-prerelease || true
           git checkout -b merge-develop-into-prerelease
           
+          # 5. МЕРДЖ: Вливаємо develop
           if git merge origin/develop; then
             git push origin merge-develop-into-prerelease --force
           else
