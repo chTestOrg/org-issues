@@ -28,65 +28,78 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           path: target-repo
 
-      - name: Check for Changes & Merge
-        id: check_changes
+      - name: Configure Git & Fetch
         working-directory: ./target-repo
         run: |
+          echo "🔧 Налаштування користувача git..."
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. Завантажуємо актуальний стан обох гілок
+          echo "📡 Оновлення посилань на гілки develop та prerelease..."
           git fetch origin develop prerelease
 
-          # 2. ПЕРЕВІРКА: Використовуємо origin/ для обох гілок (це вирішує твою помилку)
-          CHANGES_COUNT=$(git rev-list --count origin/prerelease..origin/develop)
+      - name: Check for Changes
+        id: check
+        working-directory: ./target-repo
+        run: |
+          echo "🔍 Порівняння гілок origin/prerelease та origin/develop..."
+          COUNT=$(git rev-list --count origin/prerelease..origin/develop)
           
-          echo "Found $CHANGES_COUNT new commits in develop relative to prerelease."
-          
-          if [ "$CHANGES_COUNT" -eq "0" ]; then
-            echo "No changes to merge. Skipping PR creation."
+          if [ "$COUNT" -eq "0" ]; then
+            echo "✅ Змін не знайдено. Гілка prerelease вже містить усі комміти з develop."
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          echo "has_changes=true" >> $GITHUB_OUTPUT
-
-          # 3. ПІДГОТОВКА: Створюємо локальну prerelease з віддаленої
-          git checkout -B prerelease origin/prerelease
-          
-          # 4. СТВОРЕННЯ ГІЛКИ: Створюємо тимчасову гілку від prerelease
-          git branch -D merge-develop-into-prerelease || true
-          git checkout -b merge-develop-into-prerelease
-          
-          # 5. МЕРДЖ: Вливаємо develop
-          if git merge origin/develop; then
-            git push origin merge-develop-into-prerelease --force
           else
-            echo "❌ Merge conflict detected! Stopping."
+            echo "🚀 Знайдено $COUNT нових коммітів у develop. Готуємося до мерджу..."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare Merge Branch
+        if: steps.check.outputs.has_changes == 'true'
+        working-directory: ./target-repo
+        run: |
+          echo "🧹 Очищення старих тимчасових гілок..."
+          git push origin --delete merge-develop-into-prerelease || echo "ℹ️ Гілка в origin відсутня, видалення не потрібне."
+          git branch -D merge-develop-into-prerelease || echo "ℹ️ Локальна гілка відсутня."
+          
+          echo "🌱 Створення нової гілки 'merge-develop-into-prerelease' на базі 'prerelease'..."
+          git checkout -B prerelease origin/prerelease
+          git checkout -b merge-develop-into-prerelease
+
+      - name: Execute Merge & Push
+        if: steps.check.outputs.has_changes == 'true'
+        working-directory: ./target-repo
+        run: |
+          echo "🔀 Початок мерджу develop -> merge-develop-into-prerelease..."
+          if git merge origin/develop --no-edit; then
+            echo "✅ Мердж успішний! Відправляємо гілку в origin..."
+            git push origin merge-develop-into-prerelease
+          else
+            echo "❌ ПОМИЛКА: Виявлено конфлікти мерджу!"
+            echo "Будь ласка, вирішіть конфлікти вручну в гілці develop або prerelease."
             exit 1
           fi
 
       - name: Create Pull Request
-        if: steps.check_changes.outputs.has_changes == 'true'
+        if: steps.check.outputs.has_changes == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const [owner, repo] = "${{ inputs.target-repo }}".split('/');
+            const prTitle = '🚀 Merge: develop -> prerelease';
+            
+            console.log(`🤖 Спроба створити PR у ${owner}/${repo}...`);
+            
             try {
               const { data: pullRequest } = await github.rest.pulls.create({
-                owner: owner,
-                repo: repo,
-                title: '🚀 Merge: develop -> prerelease',
+                owner,
+                repo,
+                title: prTitle,
                 head: 'merge-develop-into-prerelease',
                 base: 'prerelease',
-                body: 'Автоматично створений PR для синхронізації змін між гілками.',
+                body: '### 🤖 Автоматична синхронізація\nЦей PR створено автоматично для перенесення змін з `develop` у `prerelease`.',
               });
-              core.info(`PR created: ${pullRequest.html_url}`);
+              console.log(`✅ PR успішно створено: ${pullRequest.html_url}`);
             } catch (error) {
-              if (error.message.includes('A pull request already exists')) {
-                core.info('PR вже існує, гілку оновлено.');
-              } else {
-                core.setFailed(`API Error: ${error.message}`);
-              }
+              console.log(`⚠️ Попередження: ${error.message}`);
             }
