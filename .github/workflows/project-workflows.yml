@@ -58,7 +58,7 @@ jobs:
             }
 
       - name: Run Project PR Merged Automation
-        if: github.event.pull_request.merged == true
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
         uses: actions/github-script@v7
         env:
           script-name: "project-pr-merged"
