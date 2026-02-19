@@ -1,6 +1,6 @@
-import { config } from '../../config/project-org-dev-board.mjs';
-import { getClosingIssuesReferences } from '../api/getClosingIssuesReferences.mjs';
-import { updateSingleSelectField } from '../api/updateSingleSelectField.mjs';
+import { config } from '../config/project-org-dev-board.mjs';
+import { getClosingIssuesReferences } from '../api-graphql/getClosingIssuesReferences.mjs';
+import { updateSingleSelectField } from '../api-graphql/updateSingleSelectField.mjs';
 import { logGroup } from '../utils/logger.mjs';
 
 export default async function projectPrMerged({ github, context, core }) {

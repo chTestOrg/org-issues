@@ -12,10 +12,17 @@ export async function updateSingleSelectField(github, { projectId, itemId, field
         }
       `;
 
-    await github.graphql(mutation, {
-        projectId,
-        itemId,
-        fieldId,
-        optionId
-    });
+    try {
+        await github.graphql(mutation, {
+            projectId,
+            itemId,
+            fieldId,
+            optionId
+        });
+    } catch (error) {
+        throw new Error(
+            `GraphQL Update Error: Failed to set option "${optionId}" for field "${fieldId}" on item "${itemId}". ` +
+            `Details: ${error.message}`
+        );
+    }
 }

@@ -1,11 +1,10 @@
-import {config} from "../../config/project-org-dev-board.mjs";
-import {logGroup} from "../utils/logger.mjs";
-import {getClosingIssuesReferences} from "../api/getClosingIssuesReferences.mjs";
-import {updateSingleSelectField} from "../api/updateSingleSelectField.mjs";
-import prVerifyLinkedIssues from "./temp/links.mjs";
-//import prVerifyLinkedIssues from "./pr-verify-linked-issues.mjs";
+import {config} from '../config/project-org-dev-board.mjs';
+import {getClosingIssuesReferences} from '../api-graphql/getClosingIssuesReferences.mjs';
+import {updateSingleSelectField} from '../api-graphql/updateSingleSelectField.mjs';
+import {logGroup} from '../utils/logger.mjs';
+import {parseLinkedIssues} from "../helpers/parseLinkedIssues.mjs";
 
-export default async function projectPrOpened({ github, context, core }) {
+export default async function projectPrOpened({github, context, core}) {
     try {
         if (!context.payload.pull_request) {
             core.notice("Not a PR event. Skipping.");
@@ -14,7 +13,7 @@ export default async function projectPrOpened({ github, context, core }) {
 
         const owner = context.repo.owner;
         const repo = context.repo.repo;
-        const prNumber = context.payload.pull_request.number;
+        const pull_number = context.payload.pull_request.number;
 
         const project = config.project;
 
@@ -22,25 +21,22 @@ export default async function projectPrOpened({ github, context, core }) {
         const DEV_STATUS_FIELD_ID = project.fields.status.id;
         const DEV_STATUS_FIELD_OPTION = project.fields.status.options;
 
-        //await prVerifyLinkedIssues({github, context, core});
-        await prVerifyLinkedIssues({github, context, core});
+        const {data: currentPr} = await github.rest.pulls.get({owner, repo, pull_number,});
+        const prBody = currentPr.body ?? "";
 
-/*        await logGroup(core, "Fetch closing issues", async () => {
+        await logGroup(core, "Fetch closing issues", async () => {
 
-            const parseIssuesLink = await prVerifyLinkedIssues({github, context, core});
+            //const parseIssuesLink = await prVerifyLinkedIssues({github, context, core});
+            const issuesLinked = parseLinkedIssues(prBody)
+            const issuesReferences = await getClosingIssuesReferences(github, {owner, repo, pull_number});
 
-            const { issues } = await getClosingIssuesReferences(github, {
-                owner,
-                repo,
-                prNumber
-            });
-
-            if (issues.length === 0) {
+            if (issuesLinked.length === 0 || issuesReferences.length === 0) {
                 core.notice("No linked issues found.");
                 return;
             }
 
-            core.info(`Found ${issues.length} issue(s).`);
+            core.info(`Found ${issuesLinked.length} issue(s).`);
+            core.info(`Found ${issuesReferences.length} issue(s).`);
 
             const items = [];
 
@@ -64,7 +60,7 @@ export default async function projectPrOpened({ github, context, core }) {
 
             const errors = [];
 
-            for (const { issueNumber, itemId } of items) {
+            for (const {issueNumber, itemId} of items) {
                 await logGroup(core, `Issue #${issueNumber}`, async () => {
                     try {
                         await updateSingleSelectField(github, {
@@ -88,7 +84,7 @@ export default async function projectPrOpened({ github, context, core }) {
             } else {
                 core.notice("All issues moved to QA successfully.");
             }
-        });*/
+        });
     } catch (err) {
         core.setFailed(`Fatal error: ${err.message}`);
     }

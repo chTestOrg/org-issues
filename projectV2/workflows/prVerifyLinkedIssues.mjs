@@ -1,5 +1,5 @@
-import {logGroup} from "./logger.mjs";
-import { buildInfoBlock, removeBlocks } from "./info-blocks.mjs";
+import { logGroup } from '../utils/logger.mjs';
+import { buildInfoBlock, removeBlocks } from "../helpers/info-blocks.mjs";
 
 
 /**
