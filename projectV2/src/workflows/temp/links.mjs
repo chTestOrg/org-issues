@@ -6,7 +6,8 @@ import { buildInfoBlock, removeBlocks } from "./info-blocks.mjs";
  * Парсить body PR та повертає унікальні issue-посилання по ключу owner/repo.
  */
 function extractIssuesByRepo(body) {
-    const issueRegex = /https?:\/\/github\.com\/([^/\s]+)\/([^/\s]+)\/issues\/(\d+)\b/gi;
+    //const issueRegex = /https?:\/\/github\.com\/([^/\s]+)\/([^/\s]+)\/issues\/(\d+)\b/gi;
+    const issueRegex = /(?:https?:\/\/github\.com\/)?([^/\s]+)\/([^/\s]+)\/issues\/(\d+)\b/gi;
     const issuesByRepo = new Map();
 
     for (const match of body.matchAll(issueRegex)) {
