@@ -1,6 +1,6 @@
 export const config = {
   "meta": {
-    "fetchedAt": "2026-02-11T09:21:29.949Z",
+    "fetchedAt": "2026-02-19T10:54:37.530Z",
     "organization": "chTestORG",
     "projectNumber": 1
   },
@@ -15,6 +15,24 @@ export const config = {
       "assignees": {
         "id": "PVTF_lADODFU6284BNtifzg8oHug",
         "type": "ASSIGNEES"
+      },
+      "branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "type": "SINGLE_SELECT",
+        "options": {
+          "stage": {
+            "id": "8f95f259",
+            "name": "stage"
+          },
+          "prerelease": {
+            "id": "049fbca0",
+            "name": "prerelease"
+          },
+          "master": {
+            "id": "0f85fee4",
+            "name": "master"
+          }
+        }
       },
       "status": {
         "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
@@ -152,17 +170,13 @@ export const config = {
           }
         }
       },
-      "environment": {
+      "application": {
         "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
         "type": "SINGLE_SELECT",
         "options": {
-          "stage": {
+          "xtiles_web": {
             "id": "15216bc3",
-            "name": "Stage"
-          },
-          "prerelease": {
-            "id": "86b2d1fe",
-            "name": "Prerelease"
+            "name": "xTiles Web"
           },
           "webclipper": {
             "id": "4c99ea9d",
@@ -173,6 +187,10 @@ export const config = {
             "name": "DesktopApp"
           }
         }
+      },
+      "release": {
+        "id": "PVTF_lADODFU6284BNtifzg96gdA",
+        "type": "TEXT"
       }
     }
   }

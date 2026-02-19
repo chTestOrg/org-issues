@@ -23,7 +23,22 @@ export default async function projectPrMerged({ github, context, core }) {
         const QA_STATUS_FIELD_ID = project.fields.status_qa_board.id;
         const QA_TODO_OPTION = project.fields.status_qa_board.options.todo;
 
+        const BRANCH_FIELD_ID = project.fields.branch.id
+        const BRANCH_OPTIONS = project.fields.branch.options
+
         await logGroup(core, "Fetch closing issues", async () => {
+
+            const baseBranch = context.payload.pull_request.base.ref;
+            core.info(`PR merged into branch: ${baseBranch}`);
+
+            // Шукаємо опцію в конфігу, назва якої відповідає гілці
+            const targetBranchOption = Object.values(BRANCH_OPTIONS).find(
+                (opt) => opt.name === baseBranch
+            );
+
+            if (!targetBranchOption) {
+                core.warning(`No project option found for branch: ${baseBranch}`);
+            }
 
             const { merged, issues } = await getClosingIssuesReferences(github, {
                 owner,
@@ -86,6 +101,14 @@ export default async function projectPrMerged({ github, context, core }) {
                             optionId: QA_TODO_OPTION.id
                         });
                         core.info(`✅ Item "${itemId}" updated "QA Board Status" to "${QA_TODO_OPTION.name}"`);
+
+                        await updateSingleSelectField(github, {
+                            projectId: PROJECT_ID,
+                            itemId,
+                            fieldId: BRANCH_FIELD_ID,
+                            optionId: targetBranchOption.id
+                        });
+                        core.info(`✅ Item "${itemId}" updated "Branch" to "${targetBranchOption.name}"`);
 
                     } catch (err) {
                         const msg = `❌ Failed for item ${itemId}: ${err.message}`;
