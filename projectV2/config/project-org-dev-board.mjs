@@ -1,6 +1,6 @@
 export const config = {
   "meta": {
-    "fetchedAt": "2026-02-19T10:54:37.530Z",
+    "fetchedAt": "2026-02-19T12:05:22.615Z",
     "organization": "chTestORG",
     "projectNumber": 1
   },
@@ -31,6 +31,10 @@ export const config = {
           "master": {
             "id": "0f85fee4",
             "name": "master"
+          },
+          "main": {
+            "id": "3ad8ce07",
+            "name": "main"
           }
         }
       },
