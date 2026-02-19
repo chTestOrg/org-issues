@@ -1,4 +1,4 @@
-import { logGroup } from "../../../projectV2/src/utils/logger.mjs";
+import { logGroup } from "../../../projectV2(5)/src/utils/logger.mjs";
 import {
     buildImportantBlock,
     buildWarningBlock,
