@@ -1,7 +1,7 @@
 name: ⚙️ Technical task v2
 description: Створити технічне завдання
 title: "[TASK]: "
-labels: ["task"]
+labels: []
 type: task
 
 body:
@@ -28,8 +28,8 @@ body:
   - type: textarea
     id: additional_info
     attributes:
-      label: ℹ️ Додаткова інформація (за потреби)
-      description: Будь-які додаткові деталі, посилання на документацію, макети або обговорення
+      label: ℹ️ Додаткова інформація
+      description: Будь-які додаткові деталі, посилання на документацію, макети, дизайн або обговорення
       placeholder: |
         Посилання на документацію, макети, API, технічні обмеження, приклади
     validations:
