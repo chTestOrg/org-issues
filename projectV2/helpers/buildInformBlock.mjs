@@ -1,9 +1,6 @@
-const BLOCK_START = "<!-- AUTO-INFO-BLOCK-START -->";
-const BLOCK_END = "<!-- AUTO-INFO-BLOCK-END -->";
-
-export const AUTO_BLOCK = {
-    start: "<!-- AUTO-INFO-BLOCK-START -->";
-    end: BLOCK_END,
+const AUTO_BLOCK = {
+    start: "<!-- AUTO-INFO-BLOCK-START -->",
+    end: "<!-- AUTO-INFO-BLOCK-END -->",
 };
 
 
