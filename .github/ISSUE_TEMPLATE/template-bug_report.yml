@@ -44,13 +44,24 @@ body:
       required: false
 
   - type: textarea
-    id: environment
+    id: additional_info
     attributes:
-      label: 💻 Середовище
+      label: ℹ️ Додаткова інформація
+      description: Заповніть, якщо це допоможе відтворити або зрозуміти проблему
       placeholder: |
-        OS:
-        Browser:
-        Версія програми:
+        💻 Середовище:
+        - OS:
+        - Browser:
+        - Версія програми:
+
+        📜 Логи:
+        (вставте сюди логи)
+
+        🔗 Посилання на обговорення
+        https://...
+
+        📝 Інше:
+        Будь-які додаткові деталі
     validations:
       required: false
 
@@ -58,15 +69,7 @@ body:
     id: logs
     attributes:
       label: 📜 Логи
-      description: За потреби додайте логи або скріншоти
+      description: За потреби додайте логи
       render: shell
-    validations:
-      required: false
-
-  - type: input
-    id: discussion
-    attributes:
-      label: 🔗 Посилання на обговорення
-      placeholder: https://...
     validations:
       required: false
