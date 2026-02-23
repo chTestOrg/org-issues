@@ -1,0 +1,38 @@
+name: ⚙️ Technical task
+description: Створити технічне завдання
+title: "[TASK]: "
+labels: []
+type: task
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 📌 Опис задачі
+      description: Що потрібно реалізувати?
+      placeholder: |
+        Опишіть суть задачі.
+        Яку проблему вона вирішує?
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 📋 Вимоги
+      placeholder: |
+        - Вимога 1
+        - Вимога 2
+        - Вимога 3
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: ℹ️ Додаткова інформація
+      placeholder: |
+        Макети, API, технічні обмеження,
+        посилання на документацію або обговорення.
+    validations:
+      required: false
