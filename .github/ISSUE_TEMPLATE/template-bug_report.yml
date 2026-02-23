@@ -1,0 +1,72 @@
+name: 🐞 Bug report
+description: Повідомити про помилку
+title: "[BUG]: "
+labels: []
+type: bug
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 📌 Опис проблеми
+      description: Детально опишіть проблему
+      placeholder: |
+        Що саме не працює?
+        Коли це відбувається?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔁 Кроки для відтворення
+      placeholder: |
+        1. Крок 1
+        2. Крок 2
+        3. Крок 3
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Фактичний результат
+      placeholder: Що сталося насправді?
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Очікуваний результат
+      placeholder: Що мало статися?
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 💻 Середовище
+      placeholder: |
+        OS:
+        Browser:
+        Версія програми:
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📜 Логи
+      description: За потреби додайте логи або скріншоти
+      render: shell
+    validations:
+      required: false
+
+  - type: input
+    id: discussion
+    attributes:
+      label: 🔗 Посилання на обговорення
+      placeholder: https://...
+    validations:
+      required: false
