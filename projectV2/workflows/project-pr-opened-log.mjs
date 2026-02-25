@@ -16,10 +16,6 @@ export default async function projectPrOpened({github, context, core}) {
             return;
         }
 
-        // Лог payload (обережно, може бути великий)
-        core.info("Full context.payload:");
-        core.info(JSON.stringify(context.payload, null, 2));
-
         const owner = context.repo.owner;
         const repo = context.repo.repo;
         const pull_number = context.payload.pull_request.number;
@@ -34,17 +30,11 @@ export default async function projectPrOpened({github, context, core}) {
         const DEV_STATUS_FIELD_ID = project.fields.status.id;
         const DEV_STATUS_FIELD_OPTION = project.fields.status.options;
 
-        core.info("Project config:");
-        core.info(JSON.stringify(project, null, 2));
-
         const {data: currentPr} = await github.rest.pulls.get({
             owner,
             repo,
             pull_number,
         });
-
-        core.info("Fetched PR data:");
-        core.info(JSON.stringify(currentPr, null, 2));
 
         const prBody = currentPr.body ?? "";
 
@@ -59,7 +49,7 @@ export default async function projectPrOpened({github, context, core}) {
 
             const issuesReferences = await getClosingIssuesReferences(
                 github,
-                {owner, repo, pull_number}
+                {owner, repo, prNumber: pull_number}
             );
 
             core.info("GraphQL issuesReferences:");
