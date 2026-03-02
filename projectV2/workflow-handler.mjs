@@ -7,6 +7,11 @@ export default async function processEvent({github, context, core}) {
         const {action, pull_request} = context.payload;
         const repoName = context.repo.repo;
 
+        if (sender.type === 'Bot') {
+            core.info("🤖 Action triggered by a bot. Exiting silently to keep status green.");
+            return;
+        }
+
         // Початковий статус
         core.info(`🚀 Processing ${action} for ${repoName}`);
 
@@ -20,8 +25,13 @@ export default async function processEvent({github, context, core}) {
                 break;
 
             case 'edited':
+                await logGroup(core, "Step: PR Edited", () =>
+                    prOpened({github, context, core})
+                );
+                // Додаємо анотацію про успіх
+                core.notice("Success: PR Edited logic executed.");
                 // Відображаємо як пропущений/неактивний крок
-                core.notice("⏭️ Skipped: PR edited. No automation defined.");
+                //core.notice("⏭️ Skipped: PR edited. No automation defined.");
                 break;
 
             case 'synchronize':
