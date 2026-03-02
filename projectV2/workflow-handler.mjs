@@ -7,31 +7,38 @@ export default async function processEvent({github, context, core}) {
         const {action, pull_request} = context.payload;
         const repoName = context.repo.repo;
 
-        core.notice(`Event: ${context.eventName}.${action} | Repo: ${repoName}`);
+        // Початковий статус
+        core.info(`🚀 Processing ${action} for ${repoName}`);
 
         switch (action) {
             case 'opened':
                 await logGroup(core, "Step: PR Opened", () =>
                     prOpened({github, context, core})
                 );
+                // Додаємо анотацію про успіх
+                core.notice("Success: PR Opened logic executed.");
                 break;
 
             case 'edited':
-                core.notice("PR edited. No specific automation defined yet.");
+                // Відображаємо як пропущений/неактивний крок
+                core.notice("⏭️ Skipped: PR edited. No automation defined.");
                 break;
 
             case 'synchronize':
-                core.notice("PR synchronized. No specific automation defined yet.");
+                core.notice("⏭️ Skipped: PR synchronized. No automation defined.");
                 break;
 
             case 'closed':
                 if (pull_request?.merged) {
-                    core.warning("PR closed & merged. No specific automation defined yet.");
+                    // Якщо логіки ще немає, але подія важлива - ставимо warning
+                    core.warning("⚠️ Pending: PR merged, but automation is not yet implemented.");
+                } else {
+                    core.notice("⏭️ Skipped: PR closed without merging.");
                 }
                 break;
 
             default:
-                core.info(`No automation for action: ${action}`);
+                core.info(`ℹ️ No automation for action: ${action}`);
         }
     });
 }
