@@ -131,7 +131,7 @@ export default async function prOpened({github, context, core}) {
         console.log("enrichedIssues:", enrichedIssues);
 
 
-        await syncPRBody({github, context, core}, enrichedIssues, currentPr);
+        //await syncPRBody({github, context, core}, enrichedIssues, currentPr);
 
     });
 }
