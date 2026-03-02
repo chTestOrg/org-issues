@@ -7,7 +7,7 @@ export default async function processEvent({github, context, core}) {
         const {action, pull_request} = context.payload;
         const repoName = context.repo.repo;
 
-        core.info(`Event: ${context.eventName}.${action} | Repo: ${repoName}`);
+        core.notice(`Event: ${context.eventName}.${action} | Repo: ${repoName}`);
 
         switch (action) {
             case 'opened':
@@ -17,16 +17,16 @@ export default async function processEvent({github, context, core}) {
                 break;
 
             case 'edited':
-                core.info("PR edited. No specific automation defined yet.");
+                core.notice("PR edited. No specific automation defined yet.");
                 break;
 
             case 'synchronize':
-                core.info("PR synchronized. No specific automation defined yet.");
+                core.notice("PR synchronized. No specific automation defined yet.");
                 break;
 
             case 'closed':
                 if (pull_request?.merged) {
-                    core.info("PR closed & merged. No specific automation defined yet.");
+                    core.warning("PR closed & merged. No specific automation defined yet.");
                 }
                 break;
 
