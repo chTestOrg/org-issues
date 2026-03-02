@@ -1,0 +1,9 @@
+        core.warning(">>>>>>>>>>Fetch closingIssuesReferences (GraphQL)");
+        const linkedIssues = await getLinkedIssuesRefs(github, {
+            owner: ctx.owner,
+            repo: ctx.repo,
+            prNumber: ctx.prNumber,
+        })
+        core.info(JSON.stringify(linkedIssues, null, 2));
+        console.log("LinkedIssues:", linkedIssues);
+        core.warning(">>>>>>>>>>Fetch closingIssuesReferences (GraphQL)");
