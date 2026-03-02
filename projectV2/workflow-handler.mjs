@@ -4,7 +4,7 @@ import prOpened from "./workflows/pr-opened.mjs";
 
 export default async function processEvent({github, context, core}) {
     await logGroup(core, "GitHub Project Automation", async () => {
-        const {action, pull_request} = context.payload;
+        const {action, pull_request, sender} = context.payload;
         const repoName = context.repo.repo;
 
         if (sender.type === 'Bot') {
