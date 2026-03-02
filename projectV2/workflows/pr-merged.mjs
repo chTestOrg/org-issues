@@ -32,11 +32,14 @@ export default async function prMerged({github, context, core}) {
         const QA_STATUS_FIELD_ID = project.fields.status_qa_board.id;
         const QA_TODO_OPTION = project.fields.status_qa_board.options.todo;
 
-        const {issues} = await getClosingIssuesReferences(github, {
+        core.notice("Fetch closingIssuesReferences (GraphQL)");
+        const gqlLinkedIssues = await getClosingIssuesReferences(github, {
             owner: context.repo.owner,
             repo: context.repo.repo,
             prNumber: pr.number,
         });
+        const issues = (gqlLinkedIssues ?? [])
+
 
         if (issues.length === 0) {
             core.notice("No linked issues found.");
