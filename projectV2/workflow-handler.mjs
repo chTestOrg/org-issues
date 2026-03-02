@@ -61,6 +61,16 @@ async function addFinalSummary({ github, core, context }) {
         const limit = resources.core;
         const resetDate = new Date(limit.reset * 1000).toLocaleTimeString();
 
+        core.warning(`
+Rate Limit Status:
+------------------
+Limit:     ${limit.limit}
+Remaining: ${limit.remaining}
+Used:      ${limit.used}
+Resets At: ${resetDate}
+------------------
+        `);
+
         await core.summary
             .addHeading('🚀 Automation Summary')
             .addTable([
