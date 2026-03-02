@@ -1,3 +1,4 @@
+//projectV2/api/graphql/getClosingIssuesReferences.mjs
 export async function getClosingIssuesReferences(github, {owner, repo, prNumber}) {
     const query = `
         query($owner: String!, $repo: String!, $prNumber: Int!) {

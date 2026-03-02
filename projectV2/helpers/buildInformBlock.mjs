@@ -1,3 +1,4 @@
+//projectV2/helpers/buildInformBlock.mjs
 const AUTO_BLOCK = {
     start: "<!-- AUTO-INFO-BLOCK-START -->",
     end: "<!-- AUTO-INFO-BLOCK-END -->",
@@ -46,4 +47,25 @@ export function removeInfoBlocks(body = "") {
     );
 
     return body.replace(regex, "").trim();
+}
+
+export function stripAutoInfoBlocks(body = "") {
+    if (!body) return "";
+    let result = body;
+
+    while (true) {
+        const startIndex = result.indexOf(AUTO_BLOCK.start);
+        if (startIndex === -1) break;
+
+        const endIndex = result.indexOf(AUTO_BLOCK.end, startIndex);
+        if (endIndex === -1) break;
+
+        const blockEnd = endIndex + AUTO_BLOCK.end.length;
+
+        result =
+            result.slice(0, startIndex) +
+            result.slice(blockEnd);
+    }
+
+    return result.trim();
 }

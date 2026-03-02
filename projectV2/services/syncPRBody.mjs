@@ -1,4 +1,4 @@
-//syncPRBody.mjs
+//projectV2/services/syncPRBody.mjs
 import {buildInfoBlock, removeInfoBlocks} from "../helpers/buildInformBlock.mjs";
 
 function formatIssuesContent(issues) {
