@@ -51,4 +51,34 @@ export default async function processEvent({github, context, core}) {
                 core.info(`ℹ️ No automation for action: ${action}`);
         }
     });
+    // Додаємо інформацію про ліміти в Summary
+    await addFinalSummary({ github, core, context });
+}
+
+async function addFinalSummary({ github, core, context }) {
+    try {
+        const { data: { resources } } = await github.rest.rateLimit.get();
+        const limit = resources.core;
+        const resetDate = new Date(limit.reset * 1000).toLocaleTimeString();
+
+        await core.summary
+            .addHeading('🚀 Automation Summary')
+            .addTable([
+                ['Metric', 'Value'],
+                ['Repository', context.repo.repo],
+                ['Event', context.eventName],
+                ['Action', context.payload.action],
+                ['Actor', context.payload.sender.login]
+            ])
+            .addHeading('📊 API Rate Limits', 2)
+            .addTable([
+                ['Limit', 'Remaining', 'Used', 'Resets At'],
+                [limit.limit.toString(), limit.remaining.toString(), limit.used.toString(), resetDate]
+            ])
+            .write();
+
+        core.info(`🏁 Done. API Remaining: ${limit.remaining}`);
+    } catch (error) {
+        core.warning(`Could not generate summary: ${error.message}`);
+    }
 }
