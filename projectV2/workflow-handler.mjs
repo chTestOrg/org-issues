@@ -1,6 +1,7 @@
 // projectV2/src/workflow-handler.mjs
 import {logGroup} from "./utils/logger.mjs";
 import prOpened from "./workflows/pr-opened.mjs";
+import prMerged from "./workflows/pr-merged.mjs";
 
 export default async function processEvent({github, context, core}) {
     await logGroup(core, "GitHub Project Automation", async () => {
@@ -40,8 +41,13 @@ export default async function processEvent({github, context, core}) {
 
             case 'closed':
                 if (pull_request?.merged) {
+                    await logGroup(core, "Step: PR Edited", () =>
+                        prMerged({github, context, core})
+                    );
+                    // Додаємо анотацію про успіх
+                    core.notice("Success: PR Merged logic executed.")
                     // Якщо логіки ще немає, але подія важлива - ставимо warning
-                    core.warning("⚠️ Pending: PR merged, but automation is not yet implemented.");
+                    //core.warning("⚠️ Pending: PR merged, but automation is not yet implemented.");
                 } else {
                     core.notice("⏭️ Skipped: PR closed without merging.");
                 }
