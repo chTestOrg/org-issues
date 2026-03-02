@@ -60,7 +60,7 @@ export default async function prOpened({github, context, core}) {
 
 
         // Запитуємо зв'язані задачі
-        core.info("Fetch closingIssuesReferences (GraphQL)");
+        core.notice("Fetch closingIssuesReferences (GraphQL)");
         const gqlLinkedIssues = await getClosingIssuesReferences(github, {
             owner: ctx.owner,
             repo: ctx.repo,
