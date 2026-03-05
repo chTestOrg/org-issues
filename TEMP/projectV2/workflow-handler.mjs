@@ -9,7 +9,7 @@ export default async function processEvent({github, context, core}) {
         const repoName = context.repo.repo;
 
         if (sender.type === 'Bot') {
-            core.info("🤖 Action triggered by a bot. Exiting silently to keep status.");
+            core.info("🤖 Action triggered by a bot. Exiting silently to keep status green.");
             return;
         }
 
@@ -21,6 +21,7 @@ export default async function processEvent({github, context, core}) {
                 await logGroup(core, "Step: PR Opened", () =>
                     prOpened({github, context, core})
                 );
+                // Додаємо анотацію про успіх
                 core.notice("Success: PR Opened logic executed.");
                 break;
 
@@ -28,7 +29,9 @@ export default async function processEvent({github, context, core}) {
                 await logGroup(core, "Step: PR Edited", () =>
                     prOpened({github, context, core})
                 );
+                // Додаємо анотацію про успіх
                 core.notice("Success: PR Edited logic executed.");
+                // Відображаємо як пропущений/неактивний крок
                 //core.notice("⏭️ Skipped: PR edited. No automation defined.");
                 break;
 
@@ -41,7 +44,9 @@ export default async function processEvent({github, context, core}) {
                     await logGroup(core, "Step: PR Edited", () =>
                         prMerged({github, context, core})
                     );
+                    // Додаємо анотацію про успіх
                     core.notice("Success: PR Merged logic executed.")
+                    // Якщо логіки ще немає, але подія важлива - ставимо warning
                     //core.warning("⚠️ Pending: PR merged, but automation is not yet implemented.");
                 } else {
                     core.notice("⏭️ Skipped: PR closed without merging.");
@@ -53,14 +58,24 @@ export default async function processEvent({github, context, core}) {
         }
     });
     // Додаємо інформацію про ліміти в Summary
-    await addFinalSummary({github, core, context});
+    await addFinalSummary({ github, core, context });
 }
 
-async function addFinalSummary({github, core, context}) {
+async function addFinalSummary({ github, core, context }) {
     try {
-        const {data: {resources}} = await github.rest.rateLimit.get();
+        const { data: { resources } } = await github.rest.rateLimit.get();
         const limit = resources.core;
         const resetDate = new Date(limit.reset * 1000).toLocaleTimeString();
+
+//         core.warning(`
+// Rate Limit Status:
+// ------------------
+// Limit:     ${limit.limit}
+// Remaining: ${limit.remaining}
+// Used:      ${limit.used}
+// Resets At: ${resetDate}
+// ------------------
+//         `);
 
         await core.summary
             .addHeading('🚀 Automation Summary')

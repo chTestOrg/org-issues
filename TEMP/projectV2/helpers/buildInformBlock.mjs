@@ -1,4 +1,9 @@
 //projectV2/helpers/buildInformBlock.mjs
+const AUTO_BLOCK = {
+    start: "<!-- AUTO-INFO-BLOCK-START -->",
+    end: "<!-- AUTO-INFO-BLOCK-END -->",
+};
+
 
 const ALERT_TYPES = {
     warning: "[!WARNING]",
@@ -8,8 +13,7 @@ const ALERT_TYPES = {
     tip: "[!TIP]",
 };
 
-export function buildInfoBlock({type, content, markers}) {
-    const { start, end } = markers;
+export function buildInfoBlock({type, content}) {
     // Визначаємо префікс (наприклад, [!WARNING]), або лишаємо тип як є, якщо його немає в списку
     const alertTag = ALERT_TYPES[type.toLowerCase()] || `[!${type.toUpperCase()}]`;
 
@@ -19,27 +23,44 @@ export function buildInfoBlock({type, content, markers}) {
         .map(line => `> ${line}`)
         .join("\n");
 
-    return `${start}
+    return`${AUTO_BLOCK.start}
 ---
 > ${alertTag}
 ${formattedContent}
 ---
-${end}`;
+${AUTO_BLOCK.end}`;
 }
 
-export function stripAutoInfoBlocks(body = "", markers) {
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export function removeInfoBlocks(body = "") {
     if (!body) return "";
-    const { start, end } = markers;
+
+    const start = escapeRegExp(AUTO_BLOCK.start.trim());
+    const end = escapeRegExp(AUTO_BLOCK.end.trim());
+
+    const regex = new RegExp(
+        `\\s*${start}[\\s\\S]*?${end}\\s*`,
+        "g"
+    );
+
+    return body.replace(regex, "").trim();
+}
+
+export function stripAutoInfoBlocks(body = "") {
+    if (!body) return "";
     let result = body;
 
     while (true) {
-        const startIndex = result.indexOf(start);
+        const startIndex = result.indexOf(AUTO_BLOCK.start);
         if (startIndex === -1) break;
 
-        const endIndex = result.indexOf(end, startIndex);
+        const endIndex = result.indexOf(AUTO_BLOCK.end, startIndex);
         if (endIndex === -1) break;
 
-        const blockEnd = endIndex + end.length;
+        const blockEnd = endIndex + AUTO_BLOCK.end.length;
 
         result =
             result.slice(0, startIndex) +
@@ -47,21 +68,4 @@ export function stripAutoInfoBlocks(body = "", markers) {
     }
 
     return result.trim();
-}
-
-/**
- * Витягує чистий контент між маркерами автоматизації
- */
-export function extractAutoBlockContent(body = "", markers) {
-    if (!body) return null;
-    const { start, end } = markers;
-
-    // Шукаємо з кінця, бо зазвичай блок додається в кінець
-    const startIndex = body.lastIndexOf(start);
-    if (startIndex === -1) return null;
-
-    const endIndex = body.indexOf(end, startIndex);
-    if (endIndex === -1) return null;
-
-    return body.slice(startIndex + start.length, endIndex).trim();
 }

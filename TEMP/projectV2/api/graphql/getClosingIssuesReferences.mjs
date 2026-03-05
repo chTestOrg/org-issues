@@ -40,3 +40,17 @@ export async function getClosingIssuesReferences(github, {owner, repo, prNumber}
         );
     }
 }
+//
+// export const normalizeLinkedIssues = (nodes) => {
+//     return (nodes ?? []).filter(Boolean).map(node => ({
+//         id: node.id,
+//         number: node.number,
+//         owner: node.repository?.owner?.login,
+//         repo: node.repository?.name,
+//         // Одразу витягуємо проектні дані у зручному форматі
+//         projectItems: (node.projectItems?.nodes || []).map(item => ({
+//             itemId: item.id,
+//             projectId: item.project?.id
+//         }))
+//     }));
+// };
