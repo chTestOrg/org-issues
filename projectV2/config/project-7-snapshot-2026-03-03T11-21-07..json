@@ -1,0 +1,246 @@
+{
+  "fetchedAt": "2026-03-03T11:21:07.958Z",
+  "organization": "xTiles-org",
+  "projectNumber": 7,
+  "project": {
+    "id": "PVT_kwDOCbavFs4BN2Cv",
+    "title": "xTiles Develop",
+    "shortDescription": null,
+    "fields": {
+      "nodes": [
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLRc",
+          "name": "Title",
+          "dataType": "TITLE"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLRg",
+          "name": "Assignees",
+          "dataType": "ASSIGNEES"
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8uLRk",
+          "name": "Status",
+          "options": [
+            {
+              "id": "f75ad846",
+              "name": "Todo"
+            },
+            {
+              "id": "47fc9ee4",
+              "name": "In Progress"
+            },
+            {
+              "id": "aedc1ec3",
+              "name": "Review"
+            },
+            {
+              "id": "f3ed3eda",
+              "name": "QA"
+            },
+            {
+              "id": "fde1955c",
+              "name": "Completed"
+            },
+            {
+              "id": "98236657",
+              "name": "Done"
+            },
+            {
+              "id": "2953b9f5",
+              "name": "Planning"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLRo",
+          "name": "Labels",
+          "dataType": "LABELS"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLRs",
+          "name": "Linked pull requests",
+          "dataType": "LINKED_PULL_REQUESTS"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLRw",
+          "name": "Milestone",
+          "dataType": "MILESTONE"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLR0",
+          "name": "Repository",
+          "dataType": "REPOSITORY"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLR8",
+          "name": "Reviewers",
+          "dataType": "REVIEWERS"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLSA",
+          "name": "Parent issue",
+          "dataType": "PARENT_ISSUE"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8uLSE",
+          "name": "Sub-issues progress",
+          "dataType": "SUB_ISSUES_PROGRESS"
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8uZLs",
+          "name": "Priority",
+          "options": [
+            {
+              "id": "a745f549",
+              "name": "⛔ Blocker"
+            },
+            {
+              "id": "91599317",
+              "name": "🔥 Critical"
+            },
+            {
+              "id": "8bd47a17",
+              "name": "🟡 High"
+            },
+            {
+              "id": "5558a856",
+              "name": "🟢 Medium"
+            },
+            {
+              "id": "6a52320b",
+              "name": "🔵 Low"
+            },
+            {
+              "id": "02d83f2f",
+              "name": "⚪ Trivial"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8923c",
+          "name": "Environment",
+          "options": [
+            {
+              "id": "5e3e9c82",
+              "name": "Stage"
+            },
+            {
+              "id": "dcedc93e",
+              "name": "Prerelease"
+            },
+            {
+              "id": "43bd16c5",
+              "name": "WebClipper"
+            },
+            {
+              "id": "d5aee5f4",
+              "name": "DesktopApp"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8-DLg",
+          "name": "Resolution",
+          "options": [
+            {
+              "id": "03456e1e",
+              "name": "Duplicate"
+            },
+            {
+              "id": "154f1648",
+              "name": "Non Actual"
+            },
+            {
+              "id": "3d502570",
+              "name": "Need Automated"
+            },
+            {
+              "id": "b4e322c7",
+              "name": "Automated"
+            },
+            {
+              "id": "93d2dcca",
+              "name": "Rejection QA"
+            },
+            {
+              "id": "ba7a2ab2",
+              "name": "Not Tested"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8uaBQ",
+          "name": "Status QA Board",
+          "options": [
+            {
+              "id": "3d59d897",
+              "name": "Rejected"
+            },
+            {
+              "id": "2c305bb7",
+              "name": "Stand by"
+            },
+            {
+              "id": "0061557a",
+              "name": "Todo"
+            },
+            {
+              "id": "2fa3c480",
+              "name": "In Progress"
+            },
+            {
+              "id": "a13e9915",
+              "name": "Tested"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2SingleSelectField",
+          "id": "PVTSSF_lADOCbavFs4BN2Cvzg8uw3I",
+          "name": "Status Autotest Board",
+          "options": [
+            {
+              "id": "b28e5551",
+              "name": "Need Automation"
+            },
+            {
+              "id": "b4c20031",
+              "name": "Automation"
+            },
+            {
+              "id": "01dd4d7d",
+              "name": "Automated"
+            }
+          ]
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg8-ZAY",
+          "name": "Date",
+          "dataType": "DATE"
+        },
+        {
+          "__typename": "ProjectV2Field",
+          "id": "PVTF_lADOCbavFs4BN2Cvzg9CToI",
+          "name": "Release version",
+          "dataType": "TEXT"
+        }
+      ]
+    }
+  }
+}

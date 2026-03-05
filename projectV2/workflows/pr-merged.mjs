@@ -1,7 +1,8 @@
 //projectV2/workflows/pr-merged.mjs
 
 import {logGroup} from "../utils/logger.mjs";
-import {config} from "../config/project-org-dev-board.mjs";
+//import {config} from "../config/project-org-dev-board.mjs";
+import {config} from "../config/project-7-config.mjs";
 import {getClosingIssuesReferences} from "../api/graphql/getClosingIssuesReferences.mjs";
 import {updateSingleSelectField} from "../api/graphql/updateSingleSelectField.mjs";
 

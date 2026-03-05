@@ -1,0 +1,1843 @@
+{
+  "https://github.com/chTestORG/org-issues/issues/2": {
+    "issueNumber": 2,
+    "title": "Update project configuration",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVbE",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Update project configuration"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/3": {
+    "issueNumber": 3,
+    "title": "Review and refactor existing code structure",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVcc",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Review and refactor existing code structure"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/4": {
+    "issueNumber": 4,
+    "title": "Add placeholder implementation for feature X",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVhQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add placeholder implementation for feature X"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "049fbca0",
+        "value": "prerelease"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/5": {
+    "issueNumber": 5,
+    "title": "Investigate unexpected behavior in module A",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVgY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Investigate unexpected behavior in module A"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "59339976",
+        "value": "⛔ Blocker"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "98236657",
+        "value": "Done"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "43e7215b",
+        "value": "Stand by"
+      },
+      "Release": {
+        "id": "PVTF_lADODFU6284BNtifzg96gdA",
+        "value": "R2215"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/6": {
+    "issueNumber": 6,
+    "title": "Improve logging and error handling",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVh4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Improve logging and error handling"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/7": {
+    "issueNumber": 7,
+    "title": "Align naming conventions across the project",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVjA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Align naming conventions across the project"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/8": {
+    "issueNumber": 8,
+    "title": "Add basic validation for input data",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVkc",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add basic validation for input data"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "9e700621",
+        "value": "Tested"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/9": {
+    "issueNumber": 9,
+    "title": "Optimize performance of background process",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVmg",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Optimize performance of background process"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/10": {
+    "issueNumber": 10,
+    "title": "Update dependencies to latest stable versions",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVno",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Update dependencies to latest stable versions"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/11": {
+    "issueNumber": 11,
+    "title": "Document current workflow and assumptions",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVpE",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Document current workflow and assumptions"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "4ab3a03e",
+        "value": "QA"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/12": {
+    "issueNumber": 12,
+    "title": "Prepare mock data for testing purposes",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVqk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Prepare mock data for testing purposes"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "da6f957d",
+        "value": "⚪ Trivial"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/13": {
+    "issueNumber": 13,
+    "title": "Adjust configuration for development environment-",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVrQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Adjust configuration for development environment-"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "0f85fee4",
+        "value": "master"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/14": {
+    "issueNumber": 14,
+    "title": "Clean up unused files and legacy code",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVt8",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Clean up unused files and legacy code"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "da6f957d",
+        "value": "⚪ Trivial"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/15": {
+    "issueNumber": 15,
+    "title": "Add TODO placeholders for future enhancements",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVvk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add TODO placeholders for future enhancements"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/16": {
+    "issueNumber": 16,
+    "title": "Verify build process and fix warnings",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVyU",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Verify build process and fix warnings"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/17": {
+    "issueNumber": 17,
+    "title": "Standardize formatting and linting rules",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwVzk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Standardize formatting and linting rules"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status Autotest Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-hFw",
+        "optionId": "1ff82e4e",
+        "value": "Automation"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/18": {
+    "issueNumber": 18,
+    "title": "Review access control logic",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwV08",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Review access control logic"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "98236657",
+        "value": "Done"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/19": {
+    "issueNumber": 19,
+    "title": "Add basic monitoring hooks",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwV18",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add basic monitoring hooks"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/20": {
+    "issueNumber": 20,
+    "title": "General maintenance and minor improvements",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwV4M",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "General maintenance and minor improvements"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/21": {
+    "issueNumber": 21,
+    "title": "Minor adjustments to existing functionality",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWes",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Minor adjustments to existing functionality"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/22": {
+    "issueNumber": 22,
+    "title": "Verify current implementation details",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWf4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Verify current implementation details"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/23": {
+    "issueNumber": 23,
+    "title": "Add temporary workaround for known limitation",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWhk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add temporary workaround for known limitation"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/24": {
+    "issueNumber": 24,
+    "title": "Review default configuration values",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWiw",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Review default configuration values"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/25": {
+    "issueNumber": 25,
+    "title": "Prepare structure for upcoming changes",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWkM",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Prepare structure for upcoming changes"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/26": {
+    "issueNumber": 26,
+    "title": "Sync local and remote settings",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWlU",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Sync local and remote settings"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/27": {
+    "issueNumber": 27,
+    "title": "Validate assumptions in current logic",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWnA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Validate assumptions in current logic"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/28": {
+    "issueNumber": 28,
+    "title": "Add comments for better code clarity",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWoQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add comments for better code clarity"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/29": {
+    "issueNumber": 29,
+    "title": "Investigate edge cases in data flow",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWps",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Investigate edge cases in data flow"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "da6f957d",
+        "value": "⚪ Trivial"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/30": {
+    "issueNumber": 30,
+    "title": "Normalize project structure",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWrQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Normalize project structure"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "59339976",
+        "value": "⛔ Blocker"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/31": {
+    "issueNumber": 31,
+    "title": "Update internal references",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWsY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Update internal references"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "4e894332",
+        "value": "Review"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/32": {
+    "issueNumber": 32,
+    "title": "Add placeholders for integration points",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWtc",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add placeholders for integration points"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "47fc9ee4",
+        "value": "In Progress"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/33": {
+    "issueNumber": 33,
+    "title": "Recheck initialization sequence",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWu4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Recheck initialization sequence"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "47fc9ee4",
+        "value": "In Progress"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/34": {
+    "issueNumber": 34,
+    "title": "Improve readability of core module",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWwQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Improve readability of core module"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "4e894332",
+        "value": "Review"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/35": {
+    "issueNumber": 35,
+    "title": "Align implementation with documentation",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWxQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Align implementation with documentation"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "47fc9ee4",
+        "value": "In Progress"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/36": {
+    "issueNumber": 36,
+    "title": "Review error scenarios",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWyY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Review error scenarios"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "47fc9ee4",
+        "value": "In Progress"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/37": {
+    "issueNumber": 37,
+    "title": "Add basic health check",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwWzU",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Add basic health check"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "53e86365",
+        "value": "🔵 Low"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "47fc9ee4",
+        "value": "In Progress"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/38": {
+    "issueNumber": 38,
+    "title": "Prepare environment for testing",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwW04",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Prepare environment for testing"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/39": {
+    "issueNumber": 39,
+    "title": "Consolidate similar functionality",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwXCc",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Consolidate similar functionality"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "da6f957d",
+        "value": "⚪ Trivial"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/40": {
+    "issueNumber": 40,
+    "title": "Miscellaneous cleanup tasks",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwW3Y",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Miscellaneous cleanup tasks"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "0fa891aa",
+        "value": "🟢 Medium"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/41": {
+    "issueNumber": 41,
+    "title": "Consolidate similar functionality v2",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwXCk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Consolidate similar functionality v2"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "da6f957d",
+        "value": "⚪ Trivial"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/42": {
+    "issueNumber": 42,
+    "title": "Core system initialization",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwX9k",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Core system initialization"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/43": {
+    "issueNumber": 43,
+    "title": "Project structure and architecture",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYMY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Project structure and architecture"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/44": {
+    "issueNumber": 44,
+    "title": "Configuration and environment management",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYQM",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Configuration and environment management"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/45": {
+    "issueNumber": 45,
+    "title": "Base feature framework",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYTA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Base feature framework"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "8f95f259",
+        "value": "stage"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/46": {
+    "issueNumber": 46,
+    "title": "Error handling and stability improvements",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYWs",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Error handling and stability improvements"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/47": {
+    "issueNumber": 47,
+    "title": "Performance and optimization groundwork",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYbg",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Performance and optimization groundwork"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/48": {
+    "issueNumber": 48,
+    "title": "Security and access control baseline",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYe4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Security and access control baseline"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "4c99ea9d",
+        "value": "WebClipper"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/49": {
+    "issueNumber": 49,
+    "title": "Testing and quality assurance setup",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYiM",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Testing and quality assurance setup"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/50": {
+    "issueNumber": 50,
+    "title": "Documentation and developer experience",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYmY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Documentation and developer experience"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "5fda1861",
+        "value": "Planned"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/51": {
+    "issueNumber": 51,
+    "title": "Maintenance and technical debt reduction",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwYpw",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Maintenance and technical debt reduction"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "4c99ea9d",
+        "value": "WebClipper"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/52": {
+    "issueNumber": 52,
+    "title": "Update dependencies to latest stable versions",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgkwdVk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Update dependencies to latest stable versions"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "d09c87e5",
+        "value": "🟡 High"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "98236657",
+        "value": "Done"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/53": {
+    "issueNumber": 53,
+    "title": "Initial setup for core functionality",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzglW9ZQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Initial setup for core functionality"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "d726087e",
+        "value": "Rejected"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/54": {
+    "issueNumber": 54,
+    "title": "first",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzglaMXM",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "first"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/56": {
+    "issueNumber": 56,
+    "title": "325454",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzglwJ-c",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "325454"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/57": {
+    "issueNumber": 57,
+    "title": " fhf h hfgh hfgh fgh fhfgh ",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzglwKD8",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": " fhf h hfgh hfgh fgh fhfgh "
+      },
+      "Application": {
+        "id": "PVTSSF_lADODFU6284BNtifzg9GKP0",
+        "optionId": "15216bc3",
+        "value": "xTiles Web"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/58": {
+    "issueNumber": 58,
+    "title": "[BUG]:  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl9oCo",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/59": {
+    "issueNumber": 59,
+    "title": "[BUG]: Uncaught TypeError: Cannot read properties of null (reading 'weekStartsOn')",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl9odQ",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]: Uncaught TypeError: Cannot read properties of null (reading 'weekStartsOn')"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/60": {
+    "issueNumber": 60,
+    "title": "[BUG]: https://github.com/chTestOrg/org-issues/issues/new?template=template-bug_report.yml",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl9q7A",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]: https://github.com/chTestOrg/org-issues/issues/new?template=template-bug_report.yml"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/61": {
+    "issueNumber": 61,
+    "title": "[BUG]:  аів авіа віа вав іва івакунго лнрп рпр",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl9t3E",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:  аів авіа віа вав іва івакунго лнрп рпр"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/62": {
+    "issueNumber": 62,
+    "title": "[BUG]:  Заповніть, якщо це допоможе відтворити або зрозуміти проблему",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl9vGA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:  Заповніть, якщо це допоможе відтворити або зрозуміти проблему"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/63": {
+    "issueNumber": 63,
+    "title": "[TASK]: The standard Lorem Ipsum passage, used since the 1500s",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl93Z0",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[TASK]: The standard Lorem Ipsum passage, used since the 1500s"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/64": {
+    "issueNumber": 64,
+    "title": "[BUG]: The standard Lorem Ipsum passage, used since the 1500s",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl94RI",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]: The standard Lorem Ipsum passage, used since the 1500s"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/65": {
+    "issueNumber": 65,
+    "title": "[BUG]:  Uncaught TypeError: Cannot read properties of null (reading 'weekStartsOn')",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl94i4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:  Uncaught TypeError: Cannot read properties of null (reading 'weekStartsOn')"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/66": {
+    "issueNumber": 66,
+    "title": "[TASK]:",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl949s",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[TASK]:"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/67": {
+    "issueNumber": 67,
+    "title": "Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl95SY",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/68": {
+    "issueNumber": 68,
+    "title": "Section 1.10.33 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl95UE",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "Section 1.10.33 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/69": {
+    "issueNumber": 69,
+    "title": "1914 translation by H. Rackham",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl95VE",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "1914 translation by H. Rackham"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/70": {
+    "issueNumber": 70,
+    "title": "[BUG]:",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl95uw",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/71": {
+    "issueNumber": 71,
+    "title": "[TASK]: 1914 translation by H. Rackham",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl96VM",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[TASK]: 1914 translation by H. Rackham"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/72": {
+    "issueNumber": 72,
+    "title": "[BUG]: Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl97uA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]: Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC"
+      },
+      "Priority": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8sdwI",
+        "optionId": "71061741",
+        "value": "🔥 Critical"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/73": {
+    "issueNumber": 73,
+    "title": "[TASK]: The standard Lorem Ipsum passage, used since the 1500s",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl98R4",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[TASK]: The standard Lorem Ipsum passage, used since the 1500s"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/74": {
+    "issueNumber": 74,
+    "title": "[TASK]:",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl99MA",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[TASK]:"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/75": {
+    "issueNumber": 75,
+    "title": "[BUG]: The standard Lorem Ipsum passage, used since the 1500s",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgl-Jlk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]: The standard Lorem Ipsum passage, used since the 1500s"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/76": {
+    "issueNumber": 76,
+    "title": "[BUG]:  NEW TASK BUG",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgmDY18",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "[BUG]:  NEW TASK BUG"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/77": {
+    "issueNumber": 77,
+    "title": "NEW TASK 2",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgmDcXs",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "f75ad846",
+        "value": "Todo"
+      },
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "NEW TASK 2"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/78": {
+    "issueNumber": 78,
+    "title": "refactor 1",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgmDcdk",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "refactor 1"
+      },
+      "Status": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8oHuk",
+        "optionId": "93dd628f",
+        "value": "Completed"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/79": {
+    "issueNumber": 79,
+    "title": "dsign css",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgmDcig",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "dsign css"
+      },
+      "Status QA Board": {
+        "id": "PVTSSF_lADODFU6284BNtifzg8-fqE",
+        "optionId": "0453b297",
+        "value": "Todo"
+      },
+      "Branch": {
+        "id": "PVTSSF_lADODFU6284BNtifzg99Wp4",
+        "optionId": "3ad8ce07",
+        "value": "main"
+      }
+    }
+  },
+  "https://github.com/chTestORG/org-issues/issues/80": {
+    "issueNumber": 80,
+    "title": "NEW TASK",
+    "owner": "chTestORG",
+    "repo": "org-issues",
+    "itemId": "PVTI_lADODFU6284BNtifzgmdFiI",
+    "projectId": "PVT_kwDODFU6284BNtif",
+    "fields": {
+      "Title": {
+        "id": "PVTF_lADODFU6284BNtifzg8oHuc",
+        "value": "NEW TASK"
+      }
+    }
+  }
+}
+
+chasovskiy_s@chasovskiys:~/IdeaProjects/xtiles-issues$ tsx --env-file=env/.env octokit/src/scripts/runGithubActionScriptTest.ts
+🔐 Initializing GitHub App…
+[App Core
+] GitHub App initialized and handlers configured.
+✅ App authenticated
+✅ Installation: 109223952
+⚠️ Деякі задачі не було знайдено або виникли помилки доступу: Request failed due to following response errors: - Could not resolve to an Issue with the number of 1.
+- Could not resolve to an Issue with the number of 55.
+- Could not resolve to an Issue with the number of 81.
+- Could not resolve to an Issue with the number of 82.
+- Could not resolve to an Issue with the number of 83.
+- Could not resolve to an Issue with the number of 84.
+- Could not resolve to an Issue with the number of 85.
+- Could not resolve to an Issue with the number of 86.
+- Could not resolve to an Issue with the number of 87.
+- Could not resolve to an Issue with the number of 88.
+- Could not resolve to an Issue with the number of 89.
+- Could not resolve to an Issue with the number of 90.
+- Could not resolve to an Issue with the number of 91.
+- Could not resolve to an Issue with the number of 92.
+- Could not resolve to an Issue with the number of 93.
+- Could not resolve to an Issue with the number of 94.
+- Could not resolve to an Issue with the number of 95.
+- Could not resolve to an Issue with the number of 96.
+- Could not resolve to an Issue with the number of 97.
+- Could not resolve to an Issue with the number of 98.
+- Could not resolve to an Issue with the number of 99.
+- Could not resolve to an Issue with the number of 100.
+Успішно оброблено задач: 78
+
+
+
+🏁 Done
+RATE LIMIT RAW:
+{
+resources: {
+core: {limit: 5000, used: 0, remaining: 5000, reset: 1772723735},
+search: {limit: 30, used: 0, remaining: 30, reset: 1772720195},
+graphql: {limit: 5000, used: 12, remaining: 4988, reset: 1772723531},
+integration_manifest: {limit: 5000, used: 0, remaining: 5000, reset: 1772723735},
+source_import: {limit: 100, used: 0, remaining: 100, reset: 1772720195},
+code_scanning_upload: {limit: 5000, used: 0, remaining: 5000, reset: 1772723735},
+code_scanning_autofix: {limit: 10, used: 0, remaining: 10, reset: 1772720195},
+actions_runner_registration: {limit: 10000, used: 0, remaining: 10000, reset: 1772723735},
+scim: {limit: 15000, used: 0, remaining: 15000, reset: 1772723735},
+dependency_snapshots: {limit: 100, used: 0, remaining: 100, reset: 1772720195},
+dependency_sbom: {limit: 100, used: 0, remaining: 100, reset: 1772720195},
+audit_log: {limit: 1750, used: 0, remaining: 1750, reset: 1772723735},
+audit_log_streaming: {limit: 15, used: 0, remaining: 15, reset: 1772723735},
+code_search: {limit: 10, used: 0, remaining: 10, reset: 1772720195}
+},
+rate: {limit: 5000, used: 0, remaining: 5000, reset: 1772723735}
+}
+Rate Limit Status: Limit: 5000
+Remaining: 5000
+Used: 0
+Reset time (UTC epoch seconds): 1772723735
+Reset time (local time): 17: 15: 35
+
+GraphQL: Limit: 5000
+Remaining: 4988
+Used: 12
+chasovskiy_s@chasovskiys: ~/IdeaProjects/xtiles-issues$
+chasovskiy_s@chasovskiys: ~/IdeaProjects/xtiles-issues$
