@@ -129,14 +129,16 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
     // }
     // /repos/{owner}/{repo}/pulls/{pull_number}
 
+    const prNumber = context.payload.pull_request.number;
     core.info(`Token exists: ${githubToken ? "YES" : "NO"}`)
     core.info(`Token length: ${githubToken?.length}`)
     core.info(`owner: ${owner}`)
     core.info(`repo: ${repo}`)
     core.info(`PR: ${pr.prNumber}`)
 
+
     if (updatedBody !== originalBody.trim()) {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${pr.prNumber}`, {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${githubToken}`,
