@@ -36,7 +36,7 @@ jobs:
         env:
           script-name: "workflow-handler"
           # Передаємо стандартний токен для "тихих" оновлень
-          SYSTEM_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SYSTEM_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN || github.token }}
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
