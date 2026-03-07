@@ -3,7 +3,7 @@ import {logGroup} from "./utils/logger.mjs";
 import prOpened from "./workflows/pr-opened.mjs";
 import prMerged from "./workflows/pr-merged.mjs";
 
-export default async function processEvent({github, context, core}) {
+export default async function processEvent({github, context, core, githubToken}) {
     await logGroup(core, "GitHub Project Automation", async () => {
         const {action, pull_request, sender} = context.payload;
         const repoName = context.repo.repo;
@@ -19,7 +19,7 @@ export default async function processEvent({github, context, core}) {
         switch (action) {
             case 'opened':
                 await logGroup(core, "Step: PR Opened", () =>
-                    prOpened({github, context, core})
+                    prOpened({github, context, core, githubToken})
                 );
                 core.notice("Success: PR Opened logic executed.");
                 break;

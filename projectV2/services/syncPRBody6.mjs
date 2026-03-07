@@ -64,7 +64,7 @@ function formatIssuesContent(issues) {
     return lines.join("\n");
 }
 
-export async function syncPRBody({ github, context, core }, rawIssues, pr) {
+export async function syncPRBody({ github, context, core, quietOctokit }, rawIssues, pr) {
     const { owner, repo } = context.repo;
     const originalBody = pr.body ?? "";
 
@@ -122,7 +122,7 @@ export async function syncPRBody({ github, context, core }, rawIssues, pr) {
     const updatedBody = `${cleanBody}\n\n${infoBlock}`.trim();
 
     if (updatedBody !== originalBody.trim()) {
-        await github.rest.pulls.update({ owner, repo, pull_number: pr.number, body: updatedBody });
+        await quietOctokit.rest.pulls.update({ owner, repo, pull_number: pr.number, body: updatedBody });
         core.notice("PR body updated.");
     } else {
         core.notice("PR body already up to date.");
