@@ -9,7 +9,7 @@ import {config} from "../config/project-org-dev-board.mjs";
 import {getIssuesProjectItems} from "../services/getIssuesProjectItems.mjs";
 import {syncBranchValidation} from "../services/syncBranchValidation.mjs";
 
-export default async function prOpened({github, context, core, githubToken}) {
+export default async function prOpened({github, context, core, quietOctokit}) {
     await logGroup(core, "Create PR context", async () => {
         const pr = context.payload.pull_request;
 
@@ -154,11 +154,6 @@ export default async function prOpened({github, context, core, githubToken}) {
             }
         }
         console.log("Enriched issues with sources:", enrichedIssues);
-
-        core.notice("quietOctokit");
-        const quietOctokit = githubLib.getOctokit(githubToken);
-        core.notice("quietOctokit");
-
 
         core.notice("syncPRBody");
         await syncPRBody({github, context, core, quietOctokit}, enrichedIssues, currentPr);

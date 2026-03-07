@@ -45,9 +45,10 @@ jobs:
             try {
               const { default: run } = await import(scriptPath);
               
-              const githubLib = require('@actions/github');
+            // Створюємо тихий клієнт прямо тут і передаємо готовий об'єкт
+            const quietOctokit = github.getOctokit(process.env.SYSTEM_GITHUB_TOKEN);
             
-              await run({ github, context, core, githubLib, githubToken: process.env.SYSTEM_GITHUB_TOKEN });
+              await run({ github, context, core, quietOctokit});
             } catch (err) {
               core.setFailed(`Failed to execute ${scriptName}: ${err.message}`);
             }
