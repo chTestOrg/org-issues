@@ -135,7 +135,6 @@ export async function syncPRBody({github, context, core, githubToken}, rawIssues
     core.info(`owner: ${owner}`)
     core.info(`repo: ${repo}`)
     core.info(`PR: ${prNumber}`)
-    core.info(`PR: ${ctx}`)
 
 
     if (updatedBody !== originalBody.trim()) {
