@@ -156,7 +156,7 @@ export default async function prOpened({github, context, core, githubToken}) {
         console.log("Enriched issues with sources:", enrichedIssues);
 
         core.notice("quietOctokit");
-        const quietOctokit = github.getOctokit(githubToken);
+        const quietOctokit = githubLib.getOctokit(githubToken);
         core.notice("quietOctokit");
 
 
