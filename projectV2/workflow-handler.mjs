@@ -19,6 +19,10 @@ export default async function processEvent({github, context, core, githubToken})
         core.info(`Token exists: ${githubToken ? "YES" : "NO"}`)
         core.info(`Token length: ${githubToken?.length}`)
 
+        // Виводимо весь payload у форматі JSON
+        core.info("Full context.payload:");
+        core.info(JSON.stringify(context.payload, null, 2));
+
         switch (action) {
             case 'opened':
                 await logGroup(core, "Step: PR Opened", () =>
