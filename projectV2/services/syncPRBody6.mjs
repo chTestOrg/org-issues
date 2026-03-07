@@ -64,7 +64,7 @@ function formatIssuesContent(issues) {
     return lines.join("\n");
 }
 
-export async function syncPRBody({ github, context, core, quietOctokit }, rawIssues, pr) {
+export async function syncPRBody({ github, context, core, githubToken }, rawIssues, pr) {
     const { owner, repo } = context.repo;
     const originalBody = pr.body ?? "";
 
@@ -121,12 +121,36 @@ export async function syncPRBody({ github, context, core, quietOctokit }, rawIss
 
     const updatedBody = `${cleanBody}\n\n${infoBlock}`.trim();
 
+    // if (updatedBody !== originalBody.trim()) {
+    //     await github.rest.pulls.update({ owner, repo, pull_number: pr.number, body: updatedBody });
+    //     core.notice("PR body updated.");
+    // } else {
+    //     core.notice("PR body already up to date.");
+    // }
     if (updatedBody !== originalBody.trim()) {
-        await quietOctokit.rest.pulls.update({ owner, repo, pull_number: pr.number, body: updatedBody });
+        const response = await fetch(`https://api.github.${owner}/${repo}/pulls/${prNumber}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${githubToken}`,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28',
+                'User-Agent': 'github-actions'
+            },
+            body: JSON.stringify({ body: updatedBody })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to update PR: ${response.status} ${errorText}`);
+        }
+
+        core.info("PR updated successfully using GITHUB_TOKEN (no loop triggered).")
         core.notice("PR body updated.");
     } else {
         core.notice("PR body already up to date.");
     }
+
+
 
     core.info("=== SYNC PR BODY END ===");
 }

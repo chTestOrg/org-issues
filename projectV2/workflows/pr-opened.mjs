@@ -9,7 +9,7 @@ import {config} from "../config/project-org-dev-board.mjs";
 import {getIssuesProjectItems} from "../services/getIssuesProjectItems.mjs";
 import {syncBranchValidation} from "../services/syncBranchValidation.mjs";
 
-export default async function prOpened({github, context, core, quietOctokit}) {
+export default async function prOpened({github, context, core, githubToken}) {
     await logGroup(core, "Create PR context", async () => {
         const pr = context.payload.pull_request;
 
@@ -156,7 +156,7 @@ export default async function prOpened({github, context, core, quietOctokit}) {
         console.log("Enriched issues with sources:", enrichedIssues);
 
         core.notice("syncPRBody");
-        await syncPRBody({github, context, core, quietOctokit}, enrichedIssues, currentPr);
+        await syncPRBody({github, context, core, githubToken}, enrichedIssues, currentPr);
 
         console.log('Head branch:', ctx.headRef);   // Назва гілки з якої PR
         console.log('Base branch:', ctx.baseRef);   // Назва base branch
