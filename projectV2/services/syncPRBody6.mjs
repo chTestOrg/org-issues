@@ -131,6 +131,9 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
 
     core.info(`Token exists: ${githubToken ? "YES" : "NO"}`)
     core.info(`Token length: ${githubToken?.length}`)
+    core.info(`owner: ${owner}`)
+    core.info(`repo: ${repo}`)
+    core.info(`PR: ${pr.prNumber}`)
 
     if (updatedBody !== originalBody.trim()) {
         const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${pr.prNumber}`, {
