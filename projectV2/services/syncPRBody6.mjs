@@ -64,7 +64,7 @@ function formatIssuesContent(issues) {
     return lines.join("\n");
 }
 
-export async function syncPRBody({ github, context, core, githubToken }, rawIssues, pr) {
+export async function syncPRBody({ github, context, core, githubToken }, rawIssues, pr, ctx) {
     const { owner, repo } = context.repo;
     const originalBody = pr.body ?? "";
 
@@ -134,7 +134,8 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
     core.info(`Token length: ${githubToken?.length}`)
     core.info(`owner: ${owner}`)
     core.info(`repo: ${repo}`)
-    core.info(`PR: ${pr.prNumber}`)
+    core.info(`PR: ${prNumber}`)
+    core.info(`PR: ${ctx}`)
 
 
     if (updatedBody !== originalBody.trim()) {

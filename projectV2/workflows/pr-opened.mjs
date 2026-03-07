@@ -156,7 +156,7 @@ export default async function prOpened({github, context, core, githubToken}) {
         console.log("Enriched issues with sources:", enrichedIssues);
 
         core.notice("syncPRBody");
-        await syncPRBody({github, context, core, githubToken}, enrichedIssues, currentPr);
+        await syncPRBody({github, context, core, githubToken}, enrichedIssues, currentPr, ctx);
 
         console.log('Head branch:', ctx.headRef);   // Назва гілки з якої PR
         console.log('Base branch:', ctx.baseRef);   // Назва base branch
