@@ -1,6 +1,6 @@
 // projectV2/services/syncPRBody.mjs
-import { stripAutoInfoBlocks, buildInfoBlock, extractAutoBlockContent } from "../helpers/buildInformBlock.mjs";
-import { parseIssuesFromBody } from "../helpers/parseLinkedIssues.mjs";
+import {stripAutoInfoBlocks, buildInfoBlock, extractAutoBlockContent} from "../helpers/buildInformBlock.mjs";
+import {parseIssuesFromBody} from "../helpers/parseLinkedIssues.mjs";
 
 const LINKED_BLOCK = {
     start: "<!-- AUTO-GENERATED:LINKED-ISSUES:START -->",
@@ -22,7 +22,7 @@ function extractPreviousState(originalBody = "") {
     const previousLinked = new Set();
 
     const blockText = extractAutoBlockContent(originalBody, LINKED_BLOCK);
-    if (!blockText) return { previousExplicit, previousLinked };
+    if (!blockText) return {previousExplicit, previousLinked};
 
     // Шукаємо патерни: Closes: [назва #123](url) або Linked: [назва #123](url)
     // Регулярка витягує префікс та номер
@@ -31,14 +31,14 @@ function extractPreviousState(originalBody = "") {
         const match = line.match(/(Closes|Linked):\s+.*#(\d+)/i);
         if (!match) continue;
 
-        const [ , type, number] = match;
+        const [, type, number] = match;
         const short = `#${number}`;
 
         if (type.toLowerCase() === "closes") previousExplicit.add(short);
         else previousLinked.add(short);
     }
 
-    return { previousExplicit, previousLinked };
+    return {previousExplicit, previousLinked};
 }
 
 function formatIssuesContent(issues) {
@@ -64,13 +64,13 @@ function formatIssuesContent(issues) {
     return lines.join("\n");
 }
 
-export async function syncPRBody({ github, context, core, githubToken }, rawIssues, pr, ctx) {
-    const { owner, repo } = context.repo;
+export async function syncPRBody({github, context, core, githubToken}, rawIssues, pr, ctx) {
+    const {owner, repo} = context.repo;
     const originalBody = pr.body ?? "";
 
     core.info("=== SYNC PR BODY START ===");
 
-    const { previousExplicit, previousLinked } = extractPreviousState(originalBody);
+    const {previousExplicit, previousLinked} = extractPreviousState(originalBody);
     const cleanBody = stripAutoInfoBlocks(originalBody, LINKED_BLOCK,);
 
     // Визначаємо, що користувач написав вручну
@@ -90,7 +90,7 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
 
         // Пріоритет 1: Явне згадування (Explicit)
         if (isFromCommit || isFromBody) {
-            finalIssuesMap.set(key, { ...issue, displaySource: "explicit" });
+            finalIssuesMap.set(key, {...issue, displaySource: "explicit"});
             continue;
         }
 
@@ -101,7 +101,7 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
 
         if (isFromGraphQL && (wasPreviouslyLinked || wasNotPreviouslyExplicit)) {
             if (!finalIssuesMap.has(key)) {
-                finalIssuesMap.set(key, { ...issue, displaySource: "ui" });
+                finalIssuesMap.set(key, {...issue, displaySource: "ui"});
             }
         }
     }
@@ -139,16 +139,33 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
 
 
     if (updatedBody !== originalBody.trim()) {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${githubToken}`,
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28',
-                'User-Agent': 'github-actions'
-            },
-            body: JSON.stringify({ body: updatedBody })
-        });
+        // const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`, {
+        //     method: 'PATCH',
+        //     headers: {
+        //         'Authorization': `Bearer ${githubToken}`,
+        //         'Accept': 'application/vnd.github+json',
+        //         'X-GitHub-Api-Version': '2022-11-28',
+        //         'User-Agent': 'github-actions'
+        //     },
+        //     body: JSON.stringify({ body: updatedBody })
+        // });
+
+        const response = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${githubToken}`,
+                    Accept: "application/vnd.github+json",
+                    "Content-Type": "application/json",
+                    "User-Agent": "github-actions"
+                },
+                body: JSON.stringify({
+                    body: updatedBody
+                })
+            }
+        );
+
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -160,7 +177,6 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
     } else {
         core.notice("PR body already up to date.");
     }
-
 
 
     core.info("=== SYNC PR BODY END ===");
