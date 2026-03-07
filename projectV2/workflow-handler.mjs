@@ -16,6 +16,9 @@ export default async function processEvent({github, context, core, githubToken})
         // Початковий статус
         core.info(`🚀 Processing ${action} for ${repoName}`);
 
+        core.info(`Token exists: ${githubToken ? "YES" : "NO"}`)
+        core.info(`Token length: ${githubToken?.length}`)
+
         switch (action) {
             case 'opened':
                 await logGroup(core, "Step: PR Opened", () =>

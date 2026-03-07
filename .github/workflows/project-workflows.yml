@@ -36,7 +36,7 @@ jobs:
         env:
           script-name: "workflow-handler"
           # Передаємо стандартний токен для "тихих" оновлень
-          SYSTEM_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN || github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
@@ -44,7 +44,7 @@ jobs:
             const scriptPath = `${process.env.GITHUB_WORKSPACE}/config-repo/projectV2/${scriptName}.mjs`;       
             try {
               const { default: run } = await import(scriptPath);
-              await run({ github, context, core, githubToken: process.env.SYSTEM_GITHUB_TOKEN });
+              await run({ github, context, core, githubToken: process.env.GITHUB_TOKEN });
             } catch (err) {
               core.setFailed(`Failed to execute ${scriptName}: ${err.message}`);
             }
