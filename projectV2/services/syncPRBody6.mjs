@@ -128,7 +128,7 @@ export async function syncPRBody({ github, context, core, githubToken }, rawIssu
     //     core.notice("PR body already up to date.");
     // }
     if (updatedBody !== originalBody.trim()) {
-        const response = await fetch(`https://api.github.${owner}/${repo}/pulls/${prNumber}`, {
+        const response = await fetch(`https://api.github.${owner}/${repo}/pulls/${pr.prNumber}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${githubToken}`,
