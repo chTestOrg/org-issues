@@ -29,7 +29,7 @@ export default async function processEvent({github, context, core, githubToken})
 
             case 'edited':
                 await logGroup(core, "Step: PR Edited", () =>
-                    prOpened({github, context, core})
+                    prOpened({github, context, core, githubToken})
                 );
                 core.notice("Success: PR Edited logic executed.");
                 //core.notice("⏭️ Skipped: PR edited. No automation defined.");
