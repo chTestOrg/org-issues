@@ -59,6 +59,7 @@ function formatIssuesContent(issues) {
         for (const issue of repoIssues) {
             const prefix = issue.displaySource === "explicit" ? "Closes:" : "Linked:";
             lines.push(`${prefix} [${issue.title} #${issue.number}](${issue.url})`);
+            lines.push(`${prefix} - ${issue.url}`);
         }
     }
     return lines.join("\n");
