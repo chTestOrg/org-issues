@@ -29,11 +29,13 @@ export default async function prOpened({github, context, core, githubToken}) {
         };
 
         // отримуємо повний PR
-        const {data: currentPr} = await github.rest.pulls.get({
-            owner: ctx.owner,
-            repo: ctx.repo,
-            pull_number: ctx.prNumber,
-        });
+        // const {data: currentPr} = await github.rest.pulls.get({
+        //     owner: ctx.owner,
+        //     repo: ctx.repo,
+        //     pull_number: ctx.prNumber,
+        // });
+
+        const currentPr = pr;
 
         console.log(currentPr.commits);
 
