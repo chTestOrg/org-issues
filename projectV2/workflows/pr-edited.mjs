@@ -14,25 +14,17 @@ export default async function prEdited({ github, context, core, githubToken }) {
             owner: context.repo.owner,
             repo: context.repo.repo,
             prNumber: pr.number,
+            prTitle: pr.title,
             prData: null,
             prBody: "",
             headRef: null,
             baseRef: null,
         };
 
-        // Отримуємо актуальні дані PR
-        const { data: currentPr } = await github.rest.pulls.get({
-            owner: ctx.owner,
-            repo: ctx.repo,
-            pull_number: ctx.prNumber,
-        });
+        ctx.prData = pr;
+        ctx.prBody = pr.body ?? "";
 
-        ctx.prData = currentPr;
-        ctx.prBody = currentPr.body ?? "";
-        ctx.headRef = currentPr.head.ref;
-        ctx.baseRef = currentPr.base.ref;
-
-        core.info(`PR title: ${ctx.prData.title}`);
+        core.info(`PR title: ${ctx.prTitle}`);
         core.info(`PR body length: ${ctx.prBody.length}`);
 
         // рядок який хочемо додати
