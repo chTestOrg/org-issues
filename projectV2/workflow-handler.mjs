@@ -29,6 +29,7 @@ export default async function processEvent({github, context, core, githubToken})
                 await logGroup(core, "Step: PR Opened", () =>
                     prOpened({github, context, core, githubToken})
                 );
+                core.setFailed(true);
                 core.notice("Success: PR Opened logic executed.");
                 break;
 
