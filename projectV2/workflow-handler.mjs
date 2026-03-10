@@ -2,6 +2,7 @@
 import {logGroup} from "./utils/logger.mjs";
 import prOpened from "./workflows/pr-opened.mjs";
 import prMerged from "./workflows/pr-merged.mjs";
+import prEdited from "./workflows/pr-edited.mjs";
 
 export default async function processEvent({github, context, core, githubToken}) {
     await logGroup(core, "GitHub Project Automation", async () => {
@@ -33,7 +34,7 @@ export default async function processEvent({github, context, core, githubToken})
 
             case 'edited':
                 await logGroup(core, "Step: PR Edited", () =>
-                    prOpened({github, context, core, githubToken})
+                    prEdited({github, context, core, githubToken})
                 );
                 core.notice("Success: PR Edited logic executed.");
                 //core.notice("⏭️ Skipped: PR edited. No automation defined.");
