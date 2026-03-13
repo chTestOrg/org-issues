@@ -1,4 +1,3 @@
-//import { config } from "./config/project-7-config.mjs";
 import { config } from "./config/project-org-dev-board.mjs";
 import { getFilteredProjectItems } from "./getFilteredProjectItems.mjs";
 import { updateSingleSelectField } from "./api/graphql/updateSingleSelectField.mjs";
