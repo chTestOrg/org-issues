@@ -22,7 +22,7 @@ jobs:
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
           owner: chTestORG
 
       - name: Step 1 — Sync Completed ↔ Tested
