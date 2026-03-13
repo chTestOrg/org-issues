@@ -192,7 +192,7 @@ export const config = {
           }
         }
       },
-      "release": {
+      "release_version": {
         "id": "PVTF_lADODFU6284BNtifzg96gdA",
         "type": "TEXT"
       }
