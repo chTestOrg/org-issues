@@ -31,7 +31,7 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { default: run } = await import(
-              `${process.env.GITHUB_WORKSPACE}/projectV2/syncCompletedTested.mjs`
+              `projectV2/syncCompletedTested.mjs`
             );
             await run({ github, context, core });
 
@@ -43,6 +43,6 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { default: run } = await import(
-              `${process.env.GITHUB_WORKSPACE}/projectV2/releaseCompletedIssues.mjs`
+              `projectV2/releaseCompletedIssues.mjs`
             );
             await run({ github, context, core, releaseVersion: process.env.RELEASE_VERSION });
