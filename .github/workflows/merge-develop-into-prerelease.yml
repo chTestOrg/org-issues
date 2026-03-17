@@ -1,0 +1,139 @@
+name: Merge develop into prerelease
+
+on:
+  workflow_dispatch:
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 1: Verify that every commit in prerelease exists in develop
+      # ─────────────────────────────────────────────────────────────
+      - name: Check prerelease commits are present in develop
+        id: integrity-check
+        run: |
+          echo "Fetching branches..."
+          git fetch origin develop prerelease
+
+          echo "Checking for commits in prerelease that are missing from develop..."
+          MISSING=$(git log origin/develop..origin/prerelease --oneline)
+
+          if [ -n "$MISSING" ]; then
+            echo "::error::The following commits exist in prerelease but are MISSING from develop:"
+            echo "$MISSING"
+            echo "integrity_ok=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+          echo "All prerelease commits are present in develop. ✅"
+          echo "integrity_ok=true" >> "$GITHUB_OUTPUT"
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 2: Check whether there are any differences between branches
+      # ─────────────────────────────────────────────────────────────
+      - name: Check for differences between develop and prerelease
+        id: diff-check
+        run: |
+          DIFF=$(git log origin/prerelease..origin/develop --oneline)
+
+          if [ -z "$DIFF" ]; then
+            echo "::notice::No differences found between develop and prerelease. Nothing to merge."
+            echo "has_diff=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Changes detected in develop that are not in prerelease:"
+          echo "$DIFF"
+          echo "has_diff=true" >> "$GITHUB_OUTPUT"
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 3: Delete existing merge branch (if any) and create a fresh one
+      # ─────────────────────────────────────────────────────────────
+      - name: Recreate merge branch
+        if: steps.diff-check.outputs.has_diff == 'true'
+        run: |
+          BRANCH="merge-develop-into-prerelease"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null 2>&1; then
+            echo "Branch '$BRANCH' already exists — deleting it..."
+            git push origin --delete "$BRANCH"
+          fi
+
+          echo "Creating fresh branch '$BRANCH' from origin/prerelease..."
+          git checkout -b "$BRANCH" origin/prerelease
+          git push origin "$BRANCH"
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 4: Merge develop into the merge branch and check for conflicts
+      # ─────────────────────────────────────────────────────────────
+      - name: Merge develop and detect conflicts
+        id: merge
+        if: steps.diff-check.outputs.has_diff == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "Merging origin/develop into merge branch..."
+          if git merge origin/develop --no-ff -m "chore: merge develop into prerelease"; then
+            echo "Merge completed successfully — no conflicts. ✅"
+            echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
+            git push origin HEAD
+          else
+            echo "::error::Merge conflict detected. Please resolve conflicts manually."
+            echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
+            git merge --abort
+            exit 1
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 5: Create Pull Request and assign to the workflow triggerer
+      # ─────────────────────────────────────────────────────────────
+      - name: Create Pull Request
+        if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          BRANCH="merge-develop-into-prerelease"
+
+          # Collect commit list for PR body
+          COMMITS=$(git log origin/prerelease..origin/develop --oneline)
+
+          PR_BODY=$(cat <<EOF
+          ## Merge \`develop\` → \`prerelease\`
+
+          This PR was created automatically by [@$ACTOR](https://github.com/$ACTOR).
+
+          ### Included commits
+          \`\`\`
+          $COMMITS
+          \`\`\`
+          EOF
+          )
+
+          PR_URL=$(gh pr create \
+            --base prerelease \
+            --head "$BRANCH" \
+            --title "chore: merge develop into prerelease" \
+            --body "$PR_BODY" \
+            --assignee "$ACTOR")
+
+          echo "Pull Request created: $PR_URL ✅"
