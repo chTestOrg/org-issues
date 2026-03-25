@@ -1,4 +1,4 @@
-name: Merge develop into prerelease v3
+name: Merge develop into prerelease v9
 
 on:
   workflow_dispatch:
@@ -138,7 +138,6 @@ jobs:
           # Встановлюємо GH_REPO щоб всі gh команди працювали з org-front
           GH_REPO: ${{ env.TARGET_ORG }}/${{ env.TARGET_REPO }}
           ACTOR: ${{ github.actor }}
-          ORG: ${{ env.TARGET_ORG }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
