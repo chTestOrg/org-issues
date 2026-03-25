@@ -1,10 +1,12 @@
-name: Merge develop into prerelease v14
+name: Merge develop into prerelease v16
 
 on:
   workflow_dispatch:
 
 env:
   TARGET_REPO: org-front-end
+  SOURCE_BRANCH: develop
+  BASE_BRANCH: prerelease
   MERGE_BRANCH: merge-develop-into-prerelease
 
 jobs:
@@ -25,7 +27,7 @@ jobs:
           repositories: ${{ env.TARGET_REPO }}
 
       # ─────────────────────────────────────────────────────────────
-      # Checkout: клонуємо TARGET_REPO
+      # Checkout: клонуємо TARGET_REPO (повна історія через fetch-depth: 0)
       # ─────────────────────────────────────────────────────────────
       - name: Checkout ${{ env.TARGET_REPO }}
         uses: actions/checkout@v4
@@ -39,42 +41,43 @@ jobs:
 
       # ─────────────────────────────────────────────────────────────
       # STEP 1: Перевіряємо цілісність develop
-      # Всі коміти prerelease повинні бути присутні в develop
+      # Всі коміти BASE_BRANCH повинні бути присутні в SOURCE_BRANCH
       # ─────────────────────────────────────────────────────────────
-      - name: "[1/5] Integrity check: prerelease commits must exist in develop"
+      - name: "[1/5] Integrity check: ${{ env.BASE_BRANCH }} commits must exist in ${{ env.SOURCE_BRANCH }}"
         run: |
-          MISSING=$(git log origin/develop..origin/prerelease --oneline)
+          MISSING=$(git log origin/${{ env.SOURCE_BRANCH }}..origin/${{ env.BASE_BRANCH }} --oneline)
 
           if [ -n "$MISSING" ]; then
             echo "::error::Integrity check failed!"
-            echo "::error::The following commits are in prerelease but MISSING from develop:"
+            echo "::error::The following commits are in ${{ env.BASE_BRANCH }} but MISSING from ${{ env.SOURCE_BRANCH }}:"
             echo "$MISSING"
             echo ""
-            echo "develop branch is not up to date with prerelease. Aborting."
+            echo "${{ env.SOURCE_BRANCH }} branch is not up to date with ${{ env.BASE_BRANCH }}. Aborting."
             exit 1
           fi
 
-          echo "✅ Integrity check passed — all prerelease commits exist in develop."
+          echo "✅ Integrity check passed — all ${{ env.BASE_BRANCH }} commits exist in ${{ env.SOURCE_BRANCH }}."
 
       # ─────────────────────────────────────────────────────────────
-      # STEP 2: Перевіряємо чи є зміни develop → prerelease
+      # STEP 2: Перевіряємо чи є зміни SOURCE_BRANCH → BASE_BRANCH
       # ─────────────────────────────────────────────────────────────
-      - name: "[2/5] Diff check: develop vs prerelease"
+      - name: "[2/5] Diff check: ${{ env.SOURCE_BRANCH }} vs ${{ env.BASE_BRANCH }}"
         id: diff-check
         run: |
-          DIFF=$(git log origin/prerelease..origin/develop --oneline)
+          DIFF=$(git log origin/${{ env.BASE_BRANCH }}..origin/${{ env.SOURCE_BRANCH }} --oneline)
 
           if [ -z "$DIFF" ]; then
-            echo "::notice::No differences between develop and prerelease. Nothing to do."
+            echo "::notice::No differences between branches. Nothing to do."
+            echo "### ✅ Sync Status: Up to date" >> $GITHUB_STEP_SUMMARY
             echo "has_diff=false" >> "$GITHUB_OUTPUT"
           else
-            echo "Changes in develop not yet in prerelease:"
+            echo "Changes in ${{ env.SOURCE_BRANCH }} not yet in ${{ env.BASE_BRANCH }}:"
             echo "$DIFF"
             echo "has_diff=true" >> "$GITHUB_OUTPUT"
           fi
 
       # ─────────────────────────────────────────────────────────────
-      # STEP 3: Smart-reuse — git checkout -B створює або скидає гілку до origin/prerelease
+      # STEP 3: Smart-reuse — git checkout -B створює або скидає гілку до origin/BASE_BRANCH
       # ─────────────────────────────────────────────────────────────
       - name: "[3/5] Prepare merge branch (smart-reuse)"
         if: steps.diff-check.outputs.has_diff == 'true'
@@ -89,26 +92,28 @@ jobs:
           git config user.name  "${APP_SLUG}[bot]"
           git config user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
-          # -B створює гілку якщо не існує, або скидає до origin/prerelease якщо існує
-          git checkout -B "$BRANCH" origin/prerelease
+          # -B створює гілку якщо не існує, або скидає до origin/BASE_BRANCH якщо існує
+          git checkout -B "$BRANCH" "origin/${{ env.BASE_BRANCH }}"
           git push origin "$BRANCH" --force
 
       # ─────────────────────────────────────────────────────────────
-      # STEP 4: Merge develop → merge-гілка, перевірка конфліктів
+      # STEP 4: Merge SOURCE_BRANCH → merge-гілка, перевірка конфліктів
       # ─────────────────────────────────────────────────────────────
-      - name: "[4/5] Merge develop and check for conflicts"
+      - name: "[4/5] Merge ${{ env.SOURCE_BRANCH }} and check for conflicts"
         if: steps.diff-check.outputs.has_diff == 'true'
         id: merge
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
-          echo "Merging origin/develop into $BRANCH..."
-          if git merge origin/develop; then
+          echo "Merging origin/${{ env.SOURCE_BRANCH }} into $BRANCH..."
+          # --no-edit запобігає зависанню джоби через відкриття редактора повідомлень
+          if git merge "origin/${{ env.SOURCE_BRANCH }}" --no-edit; then
             echo "✅ Merge successful — no conflicts."
             git push origin "$BRANCH"
             echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
           else
             echo "::error::Merge conflict detected!"
+            echo "### ❌ Status: Merge Conflict" >> $GITHUB_STEP_SUMMARY
             echo "::error::Please resolve conflicts in '$BRANCH' manually."
             git merge --abort
             echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
@@ -117,8 +122,6 @@ jobs:
 
       # ─────────────────────────────────────────────────────────────
       # STEP 5: Створюємо або оновлюємо Pull Request
-      # gh pr list повертає пустий масив якщо PR не існує — без помилок
-      # GitHub гарантує що відкритий PR з парою head+base може бути лише один
       # ─────────────────────────────────────────────────────────────
       - name: "[5/5] Create or update Pull Request"
         if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
@@ -128,9 +131,10 @@ jobs:
           ACTOR: ${{ github.actor }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
+          DATE=$(date +'%Y-%m-%d')
 
           {
-            echo "## Merge \`develop\` → \`prerelease\`"
+            echo "## Merge \`${{ env.SOURCE_BRANCH }}\` → \`${{ env.BASE_BRANCH }}\` ($DATE)"
             echo ""
             echo "This PR was created automatically by [@${ACTOR}](https://github.com/${ACTOR})."
             echo ""
@@ -138,7 +142,7 @@ jobs:
             echo "<p>"
             echo ""
             echo '```'
-            git log origin/prerelease..origin/develop --oneline
+            git log "origin/${{ env.BASE_BRANCH }}..origin/${{ env.SOURCE_BRANCH }}" --oneline
             echo '```'
             echo ""
             echo "</p>"
@@ -147,7 +151,7 @@ jobs:
 
           EXISTING_PR=$(gh pr list \
             --head "$BRANCH" \
-            --base prerelease \
+            --base "${{ env.BASE_BRANCH }}" \
             --state open \
             --json number \
             --jq '.[0].number')
@@ -161,13 +165,16 @@ jobs:
 
             PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
             echo "✅ PR updated: $PR_URL"
+            echo "### 🔄 PR Updated: [$PR_URL]($PR_URL)" >> $GITHUB_STEP_SUMMARY
           else
             echo "No existing PR found — creating new one..."
             PR_URL=$(gh pr create \
-              --base prerelease \
+              --base "${{ env.BASE_BRANCH }}" \
               --head "$BRANCH" \
-              --title "chore: merge develop into prerelease" \
+              --title "chore: merge ${{ env.SOURCE_BRANCH }} into ${{ env.BASE_BRANCH }} ($DATE)" \
               --body-file pr_description.md \
               --assignee "$ACTOR")
+          
             echo "✅ PR created: $PR_URL"
+            echo "### 🚀 PR Created: [$PR_URL]($PR_URL)" >> $GITHUB_STEP_SUMMARY
           fi
