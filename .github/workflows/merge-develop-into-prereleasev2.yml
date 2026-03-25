@@ -1,4 +1,4 @@
-name: Merge develop into prerelease v13.2
+name: Merge develop into prerelease v14
 
 on:
   workflow_dispatch:
@@ -129,36 +129,34 @@ jobs:
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
-          # COMMITS передається через змінну середовища щоб уникнути
-          # проблем з спецсимволами у повідомленнях комітів в printf
-          COMMITS=$(git log origin/prerelease..origin/develop --oneline)
+          {
+            echo "## Merge \`develop\` → \`prerelease\`"
+            echo ""
+            echo "This PR was created automatically by [@${ACTOR}](https://github.com/${ACTOR})."
+            echo ""
+            echo "<details><summary>Included commits</summary>"
+            echo "<p>"
+            echo ""
+            echo '```'
+            git log origin/prerelease..origin/develop --oneline
+            echo '```'
+            echo ""
+            echo "</p>"
+            echo "</details>"
+          } > pr_description.md
 
-          PR_BODY="## Merge \`develop\` → \`prerelease\`
-
-          This PR was created automatically by [@${ACTOR}](https://github.com/${ACTOR}).
-          
-          <details><summary>Included commits</summary>
-          <p>
-          
-          \`\`\`
-          ${COMMITS}
-          \`\`\`
-          
-          </p>
-          </details>"
-          
           EXISTING_PR=$(gh pr list \
-          --head "$BRANCH" \
-          --base prerelease \
-          --state open \
-          --json number \
-          --jq '.[0].number')
-          
+            --head "$BRANCH" \
+            --base prerelease \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
           if [ -n "$EXISTING_PR" ]; then
-          echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
+            echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
 
             gh pr edit "$EXISTING_PR" \
-              --body "$PR_BODY" \
+              --body-file pr_description.md \
               --add-assignee "$ACTOR"
 
             PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
@@ -169,7 +167,7 @@ jobs:
               --base prerelease \
               --head "$BRANCH" \
               --title "chore: merge develop into prerelease" \
-              --body "$PR_BODY" \
+              --body-file pr_description.md \
               --assignee "$ACTOR")
             echo "✅ PR created: $PR_URL"
           fi
