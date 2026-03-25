@@ -1,11 +1,10 @@
-name: Merge develop into prerelease v13
+name: Merge develop into prerelease v13.2
 
 on:
   workflow_dispatch:
 
 env:
-  TARGET_REPO: org-front-end          # репозиторій з яким працюємо
-  TARGET_ORG: chTestORG           # org де живе TARGET_REPO
+  TARGET_REPO: org-front-end
   MERGE_BRANCH: merge-develop-into-prerelease
 
 jobs:
@@ -26,9 +25,9 @@ jobs:
           repositories: ${{ env.TARGET_REPO }}
 
       # ─────────────────────────────────────────────────────────────
-      # Checkout: клонуємо org-front (не поточне repo)
+      # Checkout: клонуємо TARGET_REPO
       # ─────────────────────────────────────────────────────────────
-      - name: Checkout org-front
+      - name: Checkout ${{ env.TARGET_REPO }}
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
@@ -75,14 +74,10 @@ jobs:
           fi
 
       # ─────────────────────────────────────────────────────────────
-      # STEP 3: Smart-reuse логіка для merge-гілки
-      #
-      # Якщо гілка НЕ існує  → створюємо від prerelease
-      # Якщо гілка існує     → reset --hard до prerelease (re-merge далі)
+      # STEP 3: Smart-reuse — git checkout -B створює або скидає гілку до origin/prerelease
       # ─────────────────────────────────────────────────────────────
       - name: "[3/5] Prepare merge branch (smart-reuse)"
         if: steps.diff-check.outputs.has_diff == 'true'
-        id: prepare-branch
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
@@ -90,22 +85,12 @@ jobs:
 
           APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
           APP_USER_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
-          
+
           git config user.name  "${APP_SLUG}[bot]"
           git config user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
-          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null 2>&1; then
-            echo "Branch '$BRANCH' already exists — resetting to origin/prerelease..."
-            git checkout "$BRANCH"
-            git fetch origin prerelease
-            git reset --hard origin/prerelease
-            echo "branch_existed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Creating new branch '$BRANCH' from origin/prerelease..."
-            git checkout -b "$BRANCH" origin/prerelease
-            echo "branch_existed=false" >> "$GITHUB_OUTPUT"
-          fi
-
+          # -B створює гілку якщо не існує, або скидає до origin/prerelease якщо існує
+          git checkout -B "$BRANCH" origin/prerelease
           git push origin "$BRANCH" --force
 
       # ─────────────────────────────────────────────────────────────
@@ -120,7 +105,7 @@ jobs:
           echo "Merging origin/develop into $BRANCH..."
           if git merge origin/develop; then
             echo "✅ Merge successful — no conflicts."
-            git push origin "$BRANCH" --force
+            git push origin "$BRANCH"
             echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
           else
             echo "::error::Merge conflict detected!"
@@ -132,31 +117,45 @@ jobs:
 
       # ─────────────────────────────────────────────────────────────
       # STEP 5: Створюємо або оновлюємо Pull Request
-      #
-      # PR існує → оновлюємо тіло + reassign виконавця
-      # PR не існує → створюємо новий
-      # gh pr view по назві гілки — GitHub гарантує що відкритий PR
-      # з парою head+base може бути лише один
+      # gh pr list повертає пустий масив якщо PR не існує — без помилок
+      # GitHub гарантує що відкритий PR з парою head+base може бути лише один
       # ─────────────────────────────────────────────────────────────
       - name: "[5/5] Create or update Pull Request"
         if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          GH_REPO: ${{ env.TARGET_ORG }}/${{ env.TARGET_REPO }}
+          GH_REPO: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
           ACTOR: ${{ github.actor }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
+          # COMMITS передається через змінну середовища щоб уникнути
+          # проблем з спецсимволами у повідомленнях комітів в printf
           COMMITS=$(git log origin/prerelease..origin/develop --oneline)
 
-          PR_BODY=$(printf \
-            '## Merge `develop` → `prerelease`\n\nThis PR was created automatically by [@%s](https://github.com/%s).\n\n<details><summary>Included commits</summary>\n<p>\n\n```\n%s\n```\n\n</p>\n</details>' \
-            "$ACTOR" "$ACTOR" "$COMMITS")
+          PR_BODY="## Merge \`develop\` → \`prerelease\`
 
-          EXISTING_PR=$(gh pr view "$BRANCH" --json number,state --jq 'select(.state == "OPEN") | .number' 2>/dev/null || echo "")
-
+          This PR was created automatically by [@${ACTOR}](https://github.com/${ACTOR}).
+          
+          <details><summary>Included commits</summary>
+          <p>
+          
+          \`\`\`
+          ${COMMITS}
+          \`\`\`
+          
+          </p>
+          </details>"
+          
+          EXISTING_PR=$(gh pr list \
+          --head "$BRANCH" \
+          --base prerelease \
+          --state open \
+          --json number \
+          --jq '.[0].number')
+          
           if [ -n "$EXISTING_PR" ]; then
-            echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
+          echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
 
             gh pr edit "$EXISTING_PR" \
               --body "$PR_BODY" \
