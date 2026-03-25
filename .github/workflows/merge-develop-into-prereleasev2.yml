@@ -118,7 +118,7 @@ jobs:
           BRANCH="${{ env.MERGE_BRANCH }}"
 
           echo "Merging origin/develop into $BRANCH..."
-          if git merge origin/develop --no-ff -m "chore: merge develop into prerelease"; then
+          if git merge origin/develop --no-ff; then
             echo "✅ Merge successful — no conflicts."
             git push origin "$BRANCH" --force
             echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
