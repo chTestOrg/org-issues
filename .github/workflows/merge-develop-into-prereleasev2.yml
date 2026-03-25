@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TARGET_REPO: org-front          # репозиторій з яким працюємо
+  TARGET_REPO: org-front-end          # репозиторій з яким працюємо
   MERGE_BRANCH: merge-develop-into-prerelease
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
+          owner: chTestORG
           repositories: ${{ env.TARGET_REPO }}
 
       # ─────────────────────────────────────────────────────────────
