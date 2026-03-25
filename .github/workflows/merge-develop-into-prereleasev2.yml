@@ -137,7 +137,7 @@ jobs:
           # Встановлюємо GH_REPO щоб всі gh команди працювали з org-front
           GH_REPO: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
           ACTOR: ${{ github.actor }}
-          ORG: ${{ github.repository_owner }}
+          ORG: chTestORG
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
