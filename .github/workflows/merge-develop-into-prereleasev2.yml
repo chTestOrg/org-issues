@@ -1,0 +1,197 @@
+name: Merge develop into prerelease
+
+on:
+  workflow_dispatch:
+
+env:
+  TARGET_REPO: org-front          # репозиторій з яким працюємо
+  MERGE_BRANCH: merge-develop-into-prerelease
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ─────────────────────────────────────────────────────────────
+      # Auth: отримуємо токен GitHub App
+      # ─────────────────────────────────────────────────────────────
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ env.TARGET_REPO }}
+
+      # ─────────────────────────────────────────────────────────────
+      # Checkout: клонуємо org-front (не поточне repo)
+      # ─────────────────────────────────────────────────────────────
+      - name: Checkout org-front
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch origin
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 1: Перевіряємо цілісність develop
+      # Всі коміти prerelease повинні бути присутні в develop
+      # ─────────────────────────────────────────────────────────────
+      - name: "[1/5] Integrity check: prerelease commits must exist in develop"
+        run: |
+          MISSING=$(git log origin/develop..origin/prerelease --oneline)
+
+          if [ -n "$MISSING" ]; then
+            echo "::error::Integrity check failed!"
+            echo "::error::The following commits are in prerelease but MISSING from develop:"
+            echo "$MISSING"
+            echo ""
+            echo "develop branch is not up to date with prerelease. Aborting."
+            exit 1
+          fi
+
+          echo "✅ Integrity check passed — all prerelease commits exist in develop."
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 2: Перевіряємо чи є зміни develop → prerelease
+      # ─────────────────────────────────────────────────────────────
+      - name: "[2/5] Diff check: develop vs prerelease"
+        id: diff-check
+        run: |
+          DIFF=$(git log origin/prerelease..origin/develop --oneline)
+
+          if [ -z "$DIFF" ]; then
+            echo "::notice::No differences between develop and prerelease. Nothing to do."
+            echo "has_diff=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Changes in develop not yet in prerelease:"
+            echo "$DIFF"
+            echo "has_diff=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 3: Smart-reuse логіка для merge-гілки
+      #
+      # Якщо гілка НЕ існує  → створюємо від prerelease
+      # Якщо гілка існує     → reset --hard до prerelease (re-merge далі)
+      # ─────────────────────────────────────────────────────────────
+      - name: "[3/5] Prepare merge branch (smart-reuse)"
+        if: steps.diff-check.outputs.has_diff == 'true'
+        id: prepare-branch
+        run: |
+          BRANCH="${{ env.MERGE_BRANCH }}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null 2>&1; then
+            echo "Branch '$BRANCH' already exists — resetting to origin/prerelease..."
+            git checkout "$BRANCH"
+            git fetch origin prerelease
+            git reset --hard origin/prerelease
+            echo "branch_existed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Creating new branch '$BRANCH' from origin/prerelease..."
+            git checkout -b "$BRANCH" origin/prerelease
+            echo "branch_existed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          git push origin "$BRANCH" --force
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 4: Merge develop → merge-гілка, перевірка конфліктів
+      # ─────────────────────────────────────────────────────────────
+      - name: "[4/5] Merge develop and check for conflicts"
+        if: steps.diff-check.outputs.has_diff == 'true'
+        id: merge
+        run: |
+          BRANCH="${{ env.MERGE_BRANCH }}"
+
+          echo "Merging origin/develop into $BRANCH..."
+          if git merge origin/develop --no-ff -m "chore: merge develop into prerelease"; then
+            echo "✅ Merge successful — no conflicts."
+            git push origin "$BRANCH" --force
+            echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Merge conflict detected!"
+            echo "::error::Please resolve conflicts in '$BRANCH' manually."
+            git merge --abort
+            echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 5: Створюємо або оновлюємо Pull Request
+      #
+      # PR існує → оновлюємо тіло + reassign виконавця
+      # PR не існує → створюємо новий
+      # ─────────────────────────────────────────────────────────────
+      - name: "[5/5] Create or update Pull Request"
+        if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          # Встановлюємо GH_REPO щоб всі gh команди працювали з org-front
+          GH_REPO: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
+          ACTOR: ${{ github.actor }}
+          ORG: ${{ github.repository_owner }}
+        run: |
+          BRANCH="${{ env.MERGE_BRANCH }}"
+
+          # Формуємо список комітів для тіла PR
+          COMMITS=$(git log origin/prerelease..origin/develop --oneline)
+
+          PR_BODY=$(cat <<'EOF_BODY'
+          ## Merge `develop` → `prerelease`
+
+          This PR was created automatically by [@$ACTOR](https://github.com/$ACTOR).
+
+          <details><summary>Included commits</summary>
+          <p>
+
+          ```
+          $COMMITS
+          ```
+
+          </p>
+          </details>
+          EOF_BODY
+          )
+
+          # Підставляємо змінні вручну (heredoc не розширює їх із 'EOF')
+          PR_BODY="${PR_BODY//\$ACTOR/$ACTOR}"
+          PR_BODY="${PR_BODY//\$COMMITS/$COMMITS}"
+
+          # Шукаємо відкритий PR з нашої гілки
+          # --head потребує повного формату org:branch при cross-repo виклику
+          EXISTING_PR=$(gh pr list \
+            --head "$ORG:$BRANCH" \
+            --base prerelease \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
+
+            gh pr edit "$EXISTING_PR" \
+              --body "$PR_BODY" \
+              --add-assignee "$ACTOR"
+
+            PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
+            echo "✅ PR updated: $PR_URL"
+          else
+            echo "No existing PR found — creating new one..."
+
+            PR_URL=$(gh pr create \
+              --base prerelease \
+              --head "$BRANCH" \
+              --title "chore: merge develop into prerelease" \
+              --body "$PR_BODY" \
+              --assignee "$ACTOR")
+
+            echo "✅ PR created: $PR_URL"
+          fi
