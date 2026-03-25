@@ -196,8 +196,7 @@ jobs:
               --assignee "$ACTOR" 2>&1) || {
                 EXISTING_URL=$(echo "$PR_URL" | grep -o 'https://github.com/[^ ]*')
                 if [ -n "$EXISTING_URL" ]; then
-                  EXISTING_PR=$(echo "$EXISTING_URL" | grep -o '[0-9]*
-                )
+                  EXISTING_PR=$(echo "$EXISTING_URL" | grep -o '[0-9]*')
                 echo "PR already existed (race condition) — updating PR #$EXISTING_PR..."
                 gh pr edit "$EXISTING_PR" \
                 --body "$PR_BODY" \
