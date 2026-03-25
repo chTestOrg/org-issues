@@ -9,7 +9,7 @@ env:
   MERGE_BRANCH: merge-develop-into-prerelease
 
 jobs:
-  merge:
+  merge-develop-into-prerelease:
     runs-on: ubuntu-latest
 
     steps:
@@ -83,6 +83,8 @@ jobs:
       - name: "[3/5] Prepare merge branch (smart-reuse)"
         if: steps.diff-check.outputs.has_diff == 'true'
         id: prepare-branch
+        with:
+          token: ${{ steps.app-token.outputs.token }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
