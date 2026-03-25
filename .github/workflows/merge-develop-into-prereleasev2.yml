@@ -1,10 +1,11 @@
-name: Merge develop into prerelease
+name: Merge develop into prerelease v3
 
 on:
   workflow_dispatch:
 
 env:
   TARGET_REPO: org-front-end          # репозиторій з яким працюємо
+  TARGET_ORG: chTestORG           # org де живе TARGET_REPO
   MERGE_BRANCH: merge-develop-into-prerelease
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
-          owner: chTestORG
+          owner: ${{ env.TARGET_ORG }}
           repositories: ${{ env.TARGET_REPO }}
 
       # ─────────────────────────────────────────────────────────────
@@ -135,9 +136,9 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           # Встановлюємо GH_REPO щоб всі gh команди працювали з org-front
-          GH_REPO: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
+          GH_REPO: ${{ env.TARGET_ORG }}/${{ env.TARGET_REPO }}
           ACTOR: ${{ github.actor }}
-          ORG: chTestORG
+          ORG: ${{ env.TARGET_ORG }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
@@ -166,9 +167,9 @@ jobs:
           PR_BODY="${PR_BODY//\$COMMITS/$COMMITS}"
 
           # Шукаємо відкритий PR з нашої гілки
-          # --head потребує повного формату org:branch при cross-repo виклику
+          # toLowerCase щоб уникнути проблем з регістром org назви
           EXISTING_PR=$(gh pr list \
-            --head "$ORG:$BRANCH" \
+            --head "${ORG,,}:$BRANCH" \
             --base prerelease \
             --state open \
             --json number \
@@ -186,12 +187,28 @@ jobs:
           else
             echo "No existing PR found — creating new one..."
 
+            # gh pr create повертає URL напряму, але якщо PR вже існує
+            # (race condition) — перехоплюємо помилку і знаходимо PR по URL з повідомлення
             PR_URL=$(gh pr create \
               --base prerelease \
               --head "$BRANCH" \
               --title "chore: merge develop into prerelease" \
               --body "$PR_BODY" \
-              --assignee "$ACTOR")
-
-            echo "✅ PR created: $PR_URL"
-          fi
+              --assignee "$ACTOR" 2>&1) || {
+                EXISTING_URL=$(echo "$PR_URL" | grep -o 'https://github.com/[^ ]*')
+                if [ -n "$EXISTING_URL" ]; then
+                  EXISTING_PR=$(echo "$EXISTING_URL" | grep -o '[0-9]*
+                )
+                echo "PR already existed (race condition) — updating PR #$EXISTING_PR..."
+                gh pr edit "$EXISTING_PR" \
+                --body "$PR_BODY" \
+                --add-assignee "$ACTOR"
+                PR_URL="$EXISTING_URL"
+                else
+              echo "::error::Failed to create PR: $PR_URL"
+                exit 1
+                fi
+              }
+              
+              echo "✅ PR created: $PR_URL"
+                fi
