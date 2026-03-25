@@ -1,4 +1,4 @@
-name: Merge develop into prerelease v12
+name: Merge develop into prerelease v13
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
-          owner: ${{ env.TARGET_ORG }}
+          owner: ${{ github.repository_owner }}
           repositories: ${{ env.TARGET_REPO }}
 
       # ─────────────────────────────────────────────────────────────
