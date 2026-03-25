@@ -1,4 +1,4 @@
-name: Merge develop into prerelease v9
+name: Merge develop into prerelease v11
 
 on:
   workflow_dispatch:
@@ -130,49 +130,25 @@ jobs:
       #
       # PR існує → оновлюємо тіло + reassign виконавця
       # PR не існує → створюємо новий
+      # gh pr view по назві гілки — GitHub гарантує що відкритий PR
+      # з парою head+base може бути лише один
       # ─────────────────────────────────────────────────────────────
       - name: "[5/5] Create or update Pull Request"
         if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          # Встановлюємо GH_REPO щоб всі gh команди працювали з org-front
           GH_REPO: ${{ env.TARGET_ORG }}/${{ env.TARGET_REPO }}
           ACTOR: ${{ github.actor }}
         run: |
           BRANCH="${{ env.MERGE_BRANCH }}"
 
-          # Формуємо список комітів для тіла PR
           COMMITS=$(git log origin/prerelease..origin/develop --oneline)
 
-          PR_BODY=$(cat <<'EOF_BODY'
-          ## Merge `develop` → `prerelease`
+          PR_BODY=$(printf \
+            '## Merge `develop` → `prerelease`\n\nThis PR was created automatically by [@%s](https://github.com/%s).\n\n<details><summary>Included commits</summary>\n<p>\n\n```\n%s\n```\n\n</p>\n</details>' \
+            "$ACTOR" "$ACTOR" "$COMMITS")
 
-          This PR was created automatically by [@$ACTOR](https://github.com/$ACTOR).
-
-          <details><summary>Included commits</summary>
-          <p>
-
-          ```
-          $COMMITS
-          ```
-
-          </p>
-          </details>
-          EOF_BODY
-          )
-
-          # Підставляємо змінні вручну (heredoc не розширює їх із 'EOF')
-          PR_BODY="${PR_BODY//\$ACTOR/$ACTOR}"
-          PR_BODY="${PR_BODY//\$COMMITS/$COMMITS}"
-
-          # Шукаємо відкритий PR з нашої гілки
-          # toLowerCase щоб уникнути проблем з регістром org назви
-          EXISTING_PR=$(gh pr list \
-            --head "${ORG,,}:$BRANCH" \
-            --base prerelease \
-            --state open \
-            --json number \
-            --jq '.[0].number')
+          EXISTING_PR=$(gh pr view "$BRANCH" --json number --jq '.number' 2>/dev/null || echo "")
 
           if [ -n "$EXISTING_PR" ]; then
             echo "PR #$EXISTING_PR already exists — updating body and adding assignee..."
@@ -185,28 +161,11 @@ jobs:
             echo "✅ PR updated: $PR_URL"
           else
             echo "No existing PR found — creating new one..."
-
-            # gh pr create повертає URL напряму, але якщо PR вже існує
-            # (race condition) — перехоплюємо помилку і знаходимо PR по URL з повідомлення
             PR_URL=$(gh pr create \
               --base prerelease \
               --head "$BRANCH" \
               --title "chore: merge develop into prerelease" \
               --body "$PR_BODY" \
-              --assignee "$ACTOR" 2>&1) || {
-                EXISTING_URL=$(echo "$PR_URL" | grep -o 'https://github.com/[^ ]*')
-                if [ -n "$EXISTING_URL" ]; then
-                  EXISTING_PR=$(echo "$EXISTING_URL" | grep -o '[0-9]*')
-                echo "PR already existed (race condition) — updating PR #$EXISTING_PR..."
-                gh pr edit "$EXISTING_PR" \
-                --body "$PR_BODY" \
-                --add-assignee "$ACTOR"
-                PR_URL="$EXISTING_URL"
-                else
-              echo "::error::Failed to create PR: $PR_URL"
-                exit 1
-                fi
-              }
-              
-              echo "✅ PR created: $PR_URL"
-                fi
+              --assignee "$ACTOR")
+            echo "✅ PR created: $PR_URL"
+          fi
