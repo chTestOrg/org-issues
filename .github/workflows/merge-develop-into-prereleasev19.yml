@@ -1,0 +1,222 @@
+name: Merge develop into prerelease v19
+
+on:
+  workflow_dispatch:
+    inputs:
+      head_branch:
+        description: 'Head branch (merge from)'
+        default: 'develop'
+        required: false
+      base_branch:
+        description: 'Base branch (merge into)'
+        default: 'prerelease'
+        required: false
+      pr_title:
+        description: 'Pull Request title (optional, default: Merge {head} into {base})'
+        required: false
+
+env:
+  TARGET_REPO: org-front-end
+  HEAD_BRANCH: ${{ inputs.head_branch || 'develop' }}
+  BASE_BRANCH: ${{ inputs.base_branch || 'prerelease' }}
+
+jobs:
+  merge-branches:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ─────────────────────────────────────────────────────────────
+      # Auth: отримуємо токен GitHub App
+      # ─────────────────────────────────────────────────────────────
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ env.TARGET_REPO }}
+
+      # ─────────────────────────────────────────────────────────────
+      # Checkout: клонуємо TARGET_REPO (повна історія через fetch-depth: 0)
+      # ─────────────────────────────────────────────────────────────
+      - name: Checkout ${{ env.TARGET_REPO }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch origin
+
+      # ─────────────────────────────────────────────────────────────
+      # Формуємо MERGE_BRANCH та PR_TITLE один раз через GITHUB_ENV
+      # PR_TITLE: використовуємо input якщо переданий, інакше дефолт
+      # ─────────────────────────────────────────────────────────────
+      - name: Set environment variables
+        run: |
+          MERGE_BRANCH="merge-${{ env.HEAD_BRANCH }}-into-${{ env.BASE_BRANCH }}"
+          PR_TITLE="${{ inputs.pr_title || format('Merge {0} into {1}', env.HEAD_BRANCH, env.BASE_BRANCH) }}"
+
+          echo "MERGE_BRANCH=$MERGE_BRANCH" >> $GITHUB_ENV
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+
+          echo "🔧 Merge branch: $MERGE_BRANCH"
+          echo "🔧 PR title: $PR_TITLE"
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 1: Всі коміти BASE_BRANCH повинні бути присутні в HEAD_BRANCH
+      # ─────────────────────────────────────────────────────────────
+      - name: "[1/5] Integrity check: ${{ env.BASE_BRANCH }} commits must exist in ${{ env.HEAD_BRANCH }}"
+        run: |
+          echo "🔍 Checking that all commits from ${{ env.BASE_BRANCH }} exist in ${{ env.HEAD_BRANCH }}..."
+
+          MISSING=$(git log origin/${{ env.HEAD_BRANCH }}..origin/${{ env.BASE_BRANCH }} --oneline)
+
+          if [ -n "$MISSING" ]; then
+            echo "❌ Integrity check failed — missing commits in ${{ env.HEAD_BRANCH }}:"
+            echo "$MISSING"
+            echo "- ❌ **Integrity check** — \`${{ env.HEAD_BRANCH }}\` is missing commits from \`${{ env.BASE_BRANCH }}\`" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "✅ All ${{ env.BASE_BRANCH }} commits exist in ${{ env.HEAD_BRANCH }}"
+          echo "- ✅ **Integrity check** passed" >> $GITHUB_STEP_SUMMARY
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 2: Перевіряємо чи є зміни HEAD_BRANCH → BASE_BRANCH
+      # ─────────────────────────────────────────────────────────────
+      - name: "[2/5] Diff check: ${{ env.HEAD_BRANCH }} vs ${{ env.BASE_BRANCH }}"
+        id: diff-check
+        run: |
+          echo "🔍 Checking for differences between ${{ env.HEAD_BRANCH }} and ${{ env.BASE_BRANCH }}..."
+
+          DIFF=$(git log origin/${{ env.BASE_BRANCH }}..origin/${{ env.HEAD_BRANCH }} --oneline)
+          COMMIT_COUNT=$(echo "$DIFF" | grep -c '^' || true)
+
+          if [ -z "$DIFF" ]; then
+            echo "✅ Branches are in sync — nothing to merge"
+            echo "- ✅ **Diff check** — branches are in sync, nothing to merge" >> $GITHUB_STEP_SUMMARY
+            echo "has_diff=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "✅ Found ${COMMIT_COUNT} commit(s) to merge:"
+            echo "$DIFF"
+            echo "- ✅ **Diff check** — ${COMMIT_COUNT} commit(s) to merge" >> $GITHUB_STEP_SUMMARY
+            echo "has_diff=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 3: Smart-reuse — git checkout -B створює або скидає гілку до origin/BASE_BRANCH
+      # ─────────────────────────────────────────────────────────────
+      - name: "[3/5] Prepare merge branch (smart-reuse)"
+        if: steps.diff-check.outputs.has_diff == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          echo "🔧 Configuring git identity via GitHub App..."
+          APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+          APP_USER_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
+          git config user.name  "${APP_SLUG}[bot]"
+          git config user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+          echo "✅ Git identity set to ${APP_SLUG}[bot]"
+
+          echo "🔧 Preparing branch ${{ env.MERGE_BRANCH }}..."
+          if git ls-remote --exit-code --heads origin "${{ env.MERGE_BRANCH }}" > /dev/null 2>&1; then
+            echo "Branch ${{ env.MERGE_BRANCH }} already exists — resetting to origin/${{ env.BASE_BRANCH }}"
+            git checkout -B "${{ env.MERGE_BRANCH }}" "origin/${{ env.BASE_BRANCH }}"
+            git push origin "${{ env.MERGE_BRANCH }}" --force
+            echo "✅ Branch ${{ env.MERGE_BRANCH }} existed — reset to ${{ env.BASE_BRANCH }}"
+            echo "- ✅ **Prepare branch** — \`${{ env.MERGE_BRANCH }}\` existed, reset to \`${{ env.BASE_BRANCH }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Branch ${{ env.MERGE_BRANCH }} does not exist — creating from origin/${{ env.BASE_BRANCH }}"
+            git checkout -B "${{ env.MERGE_BRANCH }}" "origin/${{ env.BASE_BRANCH }}"
+            git push origin "${{ env.MERGE_BRANCH }}"
+            echo "✅ Branch ${{ env.MERGE_BRANCH }} created from ${{ env.BASE_BRANCH }}"
+            echo "- ✅ **Prepare branch** — \`${{ env.MERGE_BRANCH }}\` created from \`${{ env.BASE_BRANCH }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 4: Merge HEAD_BRANCH → MERGE_BRANCH, перевірка конфліктів
+      # --no-edit запобігає зависанню job через відкриття редактора
+      # ─────────────────────────────────────────────────────────────
+      - name: "[4/5] Merge ${{ env.HEAD_BRANCH }} and check for conflicts"
+        if: steps.diff-check.outputs.has_diff == 'true'
+        id: merge
+        run: |
+          echo "🔀 Merging origin/${{ env.HEAD_BRANCH }} into ${{ env.MERGE_BRANCH }}..."
+
+          if git merge "origin/${{ env.HEAD_BRANCH }}" --no-edit; then
+            git push origin "${{ env.MERGE_BRANCH }}"
+            echo "✅ Merge successful — no conflicts"
+            echo "- ✅ **Merge** — no conflicts detected" >> $GITHUB_STEP_SUMMARY
+            echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
+          else
+            git merge --abort
+            echo "❌ Merge conflict detected — please resolve conflicts in ${{ env.MERGE_BRANCH }} manually"
+            echo "- ❌ **Merge** — conflicts detected in \`${{ env.MERGE_BRANCH }}\`, please resolve manually" >> $GITHUB_STEP_SUMMARY
+            echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      # ─────────────────────────────────────────────────────────────
+      # STEP 5: Створюємо або оновлюємо Pull Request
+      # gh pr list повертає пустий масив якщо PR не існує — без помилок
+      # GitHub гарантує що відкритий PR з парою head+base може бути лише один
+      # ─────────────────────────────────────────────────────────────
+      - name: "[5/5] Create or update Pull Request"
+        if: steps.diff-check.outputs.has_diff == 'true' && steps.merge.outputs.has_conflicts == 'false'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository_owner }}/${{ env.TARGET_REPO }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          DATE=$(date +'%Y-%m-%d')
+
+          echo "📝 Generating PR description..."
+          {
+            echo "## Merge \`${{ env.HEAD_BRANCH }}\` → \`${{ env.BASE_BRANCH }}\` ($DATE)"
+            echo ""
+            echo "This PR was created automatically by [@${ACTOR}](https://github.com/${ACTOR})."
+            echo ""
+            echo "<details><summary>Included commits</summary>"
+            echo "<p>"
+            echo ""
+            echo '```'
+            git log "origin/${{ env.BASE_BRANCH }}..origin/${{ env.HEAD_BRANCH }}" --oneline
+            echo '```'
+            echo ""
+            echo "</p>"
+            echo "</details>"
+          } > pr_description.md
+
+          echo "🔍 Looking for existing open PR..."
+          EXISTING_PR=$(gh pr list \
+            --head "${{ env.MERGE_BRANCH }}" \
+            --base "${{ env.BASE_BRANCH }}" \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Found existing PR #${EXISTING_PR} — updating..."
+            gh pr edit "$EXISTING_PR" \
+              --title "${{ env.PR_TITLE }} (updated $DATE)" \
+              --body-file pr_description.md \
+              --add-assignee "$ACTOR"
+
+            PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
+            echo "✅ PR #${EXISTING_PR} updated: $PR_URL"
+            echo "- ✅ **Pull Request** — #${EXISTING_PR} updated: $PR_URL" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No existing PR found — creating new one..."
+            PR_URL=$(gh pr create \
+              --base "${{ env.BASE_BRANCH }}" \
+              --head "${{ env.MERGE_BRANCH }}" \
+              --title "${{ env.PR_TITLE }} ($DATE)" \
+              --body-file pr_description.md \
+              --assignee "$ACTOR")
+          
+            echo "✅ PR created: $PR_URL"
+            echo "- ✅ **Pull Request** — created: $PR_URL" >> $GITHUB_STEP_SUMMARY
+          fi
