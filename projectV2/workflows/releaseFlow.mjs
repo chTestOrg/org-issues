@@ -5,20 +5,6 @@ import {setTextField, clearSingleSelectField, closeIssue} from "../api/graphql/m
 import {logGroup} from "../utils/logger.mjs";
 
 // ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function getField(item, fieldId) {
-    return item.fieldValues?.nodes?.find(f => f.field?.id === fieldId);
-}
-
-function filterBySource(items, source) {
-    return items.filter(item =>
-        getField(item, fields.source.id)?.name === source
-    );
-}
-
-// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -57,6 +43,20 @@ export default async function releaseFlow({github, core, filter, source, release
     core.info(`  project : ${projectId}`);
     core.info(`  dry run : ${dryRun ? "YES — no mutations will be made" : "no"}`);
     core.info("=".repeat(60));
+
+    // ---------------------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------------------
+
+    function getField(item, fieldId) {
+        return item.fieldValues?.nodes?.find(f => f.field?.id === fieldId);
+    }
+
+    function filterBySource(items, source) {
+        return items.filter(item =>
+            getField(item, fields.source.id)?.name === source
+        );
+    }
 
     // -------------------------------------------------------------------------
     // Fetch & filter
