@@ -13,9 +13,9 @@ on:
         required: true
         type: choice
         options:
-          - org-front-end
-          - org-back-end
-          - org-app
+          - front-end
+          - back-end
+          - app
       release_version:
         description: "Release version (e.g. 1.2.3)"
         required: true
