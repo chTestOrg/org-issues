@@ -1,6 +1,6 @@
 export const config = {
   "meta": {
-    "fetchedAt": "2026-03-27T11:20:02.671Z",
+    "fetchedAt": "2026-03-27T11:55:05.916Z",
     "organization": "chTestOrg",
     "projectNumber": 1
   },
@@ -223,6 +223,10 @@ export const config = {
             "name": "app"
           }
         }
+      },
+      "release_date": {
+        "id": "PVTF_lADODFU6284BNtifzhAWRyw",
+        "type": "DATE"
       }
     }
   },
