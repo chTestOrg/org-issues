@@ -19,7 +19,7 @@ function getField(item, fieldId) {
 export default async function releaseFlow({ github, core, filter, source, releaseVersion, releaseDate, dryRun = false }) {
     if (!releaseVersion) { core.setFailed("releaseVersion is required"); return; }
     if (!releaseDate)    { core.setFailed("releaseDate is required");    return; }
-    if (!source)         { core.setFailed("source is required");         return; }
+/*    if (!source)         { core.setFailed("source is required");         return; }*/
 
     const parsedDate = new Date(releaseDate);
     if (isNaN(parsedDate.getTime())) {
@@ -30,11 +30,11 @@ export default async function releaseFlow({ github, core, filter, source, releas
 
     const { id: projectId, fields } = config.project;
 
-    function filterBySource(items) {
-        return items.filter(item =>
-            getField(item, fields.source.id)?.name === source
-        );
-    }
+    // function filterBySource(items) {
+    //     return items.filter(item =>
+    //         getField(item, fields.source.id)?.name === source
+    //     );
+    // }
 
     async function mutate(label, fn) {
         if (dryRun) {
@@ -63,7 +63,8 @@ export default async function releaseFlow({ github, core, filter, source, releas
     );
 
     const withContent = rawItems.filter(item => item.content != null);
-    const items = filterBySource(withContent);
+    //const items = filterBySource(withContent);
+    const items = withContent;
 
     core.info(`  ${rawItems.length} fetched → ${withContent.length} with issue content → ${items.length} matching source "${source}"\n`);
 
