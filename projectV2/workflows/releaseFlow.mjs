@@ -1,8 +1,8 @@
-import { config }                  from "../config/project-1-config.mjs";
-import { getFilteredProjectItems } from "../getFilteredProjectItems.mjs";
-import { updateSingleSelectField } from "../api/graphql/updateSingleSelectField.mjs";
-import { setTextField, clearSingleSelectField, closeIssue } from "../api/graphql/mutations.mjs";
-import { logGroup }                from "../utils/logger.mjs";
+import {config} from "../config/project-1-config.mjs";
+import {getFilteredProjectItems} from "../getFilteredProjectItems.mjs";
+import {updateSingleSelectField} from "../api/graphql/updateSingleSelectField.mjs";
+import {setTextField, clearSingleSelectField, closeIssue} from "../api/graphql/mutations.mjs";
+import {logGroup} from "../utils/logger.mjs";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -22,11 +22,20 @@ function filterBySource(items, source) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default async function releaseFlow({ github, core, filter, source, releaseVersion, releaseDate, dryRun = false }) {
+export default async function releaseFlow({github, core, filter, source, releaseVersion, releaseDate, dryRun = false}) {
     // Validate inputs
-    if (!releaseVersion) { core.setFailed("releaseVersion is required"); return; }
-    if (!releaseDate)    { core.setFailed("releaseDate is required");    return; }
-    if (!source)         { core.setFailed("source is required");         return; }
+    if (!releaseVersion) {
+        core.setFailed("releaseVersion is required");
+        return;
+    }
+    if (!releaseDate) {
+        core.setFailed("releaseDate is required");
+        return;
+    }
+    if (!source) {
+        core.setFailed("source is required");
+        return;
+    }
 
     // In dry run mode — log the intended mutation instead of executing it
     async function mutate(label, fn) {
@@ -37,7 +46,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
         return fn();
     }
 
-    const { id: projectId, fields } = config.project;
+    const {id: projectId, fields} = config.project;
 
     core.info("=".repeat(60));
     core.info("Release Flow");
@@ -58,7 +67,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
     );
 
     const withContent = rawItems.filter(item => item.content != null);
-    const items       = filterBySource(withContent, source);
+    const items = filterBySource(withContent, source);
 
     core.info(`  ${rawItems.length} fetched → ${withContent.length} with issue content → ${items.length} matching source "${source}"\n`);
 
@@ -76,7 +85,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
         if (current) return `[skip] release_version already "${current}"`;
 
         await mutate(`setTextField release_version → "${releaseVersion}"`, () =>
-            setTextField(github, { projectId, itemId: item.id, fieldId: fields.release_version.id, text: releaseVersion })
+            setTextField(github, {projectId, itemId: item.id, fieldId: fields.release_version.id, text: releaseVersion})
         );
         return `[done] release_version → "${releaseVersion}"`;
     }
@@ -86,7 +95,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
         if (current) return `[skip] release_date already "${current}"`;
 
         await mutate(`setTextField release_date → "${releaseDate}"`, () =>
-            setTextField(github, { projectId, itemId: item.id, fieldId: fields.release_date.id, text: releaseDate })
+            setTextField(github, {projectId, itemId: item.id, fieldId: fields.release_date.id, text: releaseDate})
         );
         return `[done] release_date → "${releaseDate}"`;
     }
@@ -95,19 +104,19 @@ export default async function releaseFlow({ github, core, filter, source, releas
         if (item.content.state !== "OPEN") return `[skip] issue already ${item.content.state}`;
 
         await mutate(`closeIssue #${item.content.number}`, () =>
-            closeIssue(github, { issueId: item.content.id })
+            closeIssue(github, {issueId: item.content.id})
         );
         return `[done] issue closed`;
     }
 
     async function stepMoveToDone(item) {
-        const { completed, done } = fields.status.options;
+        const {completed, done} = fields.status.options;
         const status = getField(item, fields.status.id)?.name ?? null;
 
         if (status !== completed.name) return `[skip] status is "${status ?? "—"}", expected "${completed.name}"`;
 
         await mutate(`updateSingleSelectField status → "${done.name}"`, () =>
-            updateSingleSelectField(github, { projectId, itemId: item.id, fieldId: fields.status.id, optionId: done.id })
+            updateSingleSelectField(github, {projectId, itemId: item.id, fieldId: fields.status.id, optionId: done.id})
         );
         return `[done] status "${completed.name}" → "${done.name}"`;
     }
@@ -117,7 +126,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
         if (!qaStatus) return `[skip] QA status already empty`;
 
         await mutate(`clearSingleSelectField status_qa_board (was "${qaStatus}")`, () =>
-            clearSingleSelectField(github, { projectId, itemId: item.id, fieldId: fields.status_qa_board.id })
+            clearSingleSelectField(github, {projectId, itemId: item.id, fieldId: fields.status_qa_board.id})
         );
         return `[done] QA status "${qaStatus}" cleared`;
     }
@@ -138,13 +147,13 @@ export default async function releaseFlow({ github, core, filter, source, releas
         const outcomes = [];
 
         for (const item of items) {
-            const { number, title, state, issueType } = item.content;
+            const {number, title, state, issueType} = item.content;
             const type = issueType?.name ?? "Other";
 
             core.info(`\n  #${number} [${type}] [${state}] ${title}`);
 
-            let mutations  = 0;
-            let errors     = 0;
+            let mutations = 0;
+            let errors = 0;
             const stepErrors = [];
 
             for (const step of steps) {
@@ -160,7 +169,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
                 }
             }
 
-            outcomes.push({ number, title, type, mutations, errors, stepErrors });
+            outcomes.push({number, title, type, mutations, errors, stepErrors});
         }
 
         return outcomes;
@@ -171,10 +180,10 @@ export default async function releaseFlow({ github, core, filter, source, releas
     // -------------------------------------------------------------------------
 
     const succeeded = results.filter(r => r.errors === 0);
-    const failed    = results.filter(r => r.errors  > 0);
+    const failed = results.filter(r => r.errors > 0);
 
     const totalMutations = results.reduce((acc, r) => acc + r.mutations, 0);
-    const unchanged      = succeeded.filter(r => r.mutations === 0).length;
+    const unchanged = succeeded.filter(r => r.mutations === 0).length;
 
     core.info("\n" + "=".repeat(60));
     core.info("Summary");
@@ -192,7 +201,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
         core.info("\nProcessed:");
         for (const [type, group] of Object.entries(byType)) {
             core.info(`\n  ${type}:`);
-            for (const { number, title } of group) {
+            for (const {number, title} of group) {
                 core.info(`    #${number} ${title}`);
             }
         }
@@ -200,7 +209,7 @@ export default async function releaseFlow({ github, core, filter, source, releas
 
     if (failed.length) {
         core.info("\nFailed:");
-        for (const { number, title, stepErrors } of failed) {
+        for (const {number, title, stepErrors} of failed) {
             core.info(`  #${number} ${title}`);
             for (const err of stepErrors) {
                 core.info(`    ↳ ${err}`);
