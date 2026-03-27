@@ -66,6 +66,8 @@ export default async function releaseFlow({github, core, filter, source, release
         getFilteredProjectItems(github, projectId, filter)
     );
 
+    core.info(JSON.stringify(rawItems, null, 2));
+
     const withContent = rawItems.filter(item => item.content != null);
     const items = filterBySource(withContent, source);
 
