@@ -1,4 +1,4 @@
-import { config }                  from "../config/project-org-dev-board.mjs";
+import { config }                  from "../config/project-1-config.mjs";
 import { getFilteredProjectItems } from "../getFilteredProjectItems.mjs";
 import { updateSingleSelectField } from "../api/graphql/updateSingleSelectField.mjs";
 import { setTextField, clearSingleSelectField, closeIssue } from "../api/graphql/mutations.mjs";
