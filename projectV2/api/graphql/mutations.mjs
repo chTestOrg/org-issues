@@ -32,6 +32,21 @@ export async function clearSingleSelectField(github, { projectId, itemId, fieldI
     `, { projectId, itemId, fieldId });
 }
 
+export async function setDateField(github, { projectId, itemId, fieldId, date }) {
+    return github.graphql(`
+        mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: Date!) {
+            updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: { date: $date }
+            }) {
+                projectV2Item { id }
+            }
+        }
+    `, { projectId, itemId, fieldId, date });
+}
+
 export async function closeIssue(github, { issueId }) {
     return github.graphql(`
         mutation($issueId: ID!) {

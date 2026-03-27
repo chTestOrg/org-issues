@@ -1,7 +1,7 @@
 import {config} from "../config/project-1-config.mjs";
 import {getFilteredProjectItems} from "../getFilteredProjectItems.mjs";
 import {updateSingleSelectField} from "../api/graphql/updateSingleSelectField.mjs";
-import {setTextField, clearSingleSelectField, closeIssue} from "../api/graphql/mutations.mjs";
+import {setTextField, clearSingleSelectField, closeIssue, setDateField} from "../api/graphql/mutations.mjs";
 import {logGroup} from "../utils/logger.mjs";
 
 // ---------------------------------------------------------------------------
@@ -97,7 +97,7 @@ export default async function releaseFlow({github, core, filter, source, release
         if (current) return `[skip] release_date already "${current}"`;
 
         await mutate(`setTextField release_date → "${releaseDate}"`, () =>
-            setTextField(github, {projectId, itemId: item.id, fieldId: fields.release_date.id, text: releaseDate})
+            setDateField(github, {projectId, itemId: item.id, fieldId: fields.release_date.id, text: releaseDate})
         );
         return `[done] release_date → "${releaseDate}"`;
     }
