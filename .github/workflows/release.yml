@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      filter:
+        description: "Project board filter expression"
+        required: false
+        default: "status:Completed"
+        type: string
+      source:
+        description: "Source repository scope"
+        required: true
+        type: choice
+        options:
+          - org-front-end
+          - org-back-end
+          - org-app
+      release_version:
+        description: "Release version (e.g. 1.2.3)"
+        required: true
+        type: string
+      release_date:
+        description: "Release date (YYYY-MM-DD)"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run — log mutations without executing them"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    name: Build release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run release flow
+        uses: actions/github-script@v7
+        env:
+          FILTER:          ${{ inputs.filter }}
+          SOURCE:          ${{ inputs.source }}
+          RELEASE_VERSION: ${{ inputs.release_version }}
+          RELEASE_DATE:    ${{ inputs.release_date }}
+          DRY_RUN:         ${{ inputs.dry_run }}
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const { default: releaseFlow } = await import('${{ github.workspace }}/scripts/releaseFlow.mjs');
+
+            await releaseFlow({
+              github,
+              core,
+              filter:         process.env.FILTER,
+              source:         process.env.SOURCE,
+              releaseVersion: process.env.RELEASE_VERSION,
+              releaseDate:    process.env.RELEASE_DATE,
+              dryRun:         process.env.DRY_RUN === 'true',
+            });
