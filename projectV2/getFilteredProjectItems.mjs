@@ -27,6 +27,8 @@ export async function getFilteredProjectItems(github, projectId, filter, pageSiz
                   title
                   repository { name owner { login } }
                   labels(first: 10) { nodes { id name } }
+                  state
+                  issueType { id name }
                 }
               }
               fieldValues(first: 30) {
@@ -78,5 +80,6 @@ export async function getFilteredProjectItems(github, projectId, filter, pageSiz
         after = page.pageInfo.endCursor;
     }
 
+    //console.log(JSON.stringify(allItems, null, 2));
     return allItems;
 }
